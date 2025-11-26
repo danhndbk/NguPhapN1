@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>N1 Grammar Flashcard (1-25)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    body {
+      overscroll-behavior: none;
+      touch-action: pan-y;
+    }
+    .flip-card { 
+      perspective: 1000px;
+      -webkit-perspective: 1000px;
+    }
+    .flip-card-inner { 
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner { 
+      transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back { 
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .flip-card-back { 
+      transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+    }
+    button {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-900 to-purple-900 p-4">
+  <div id="app"></div>
+
+  <script>
+    const data = [
+      { id: 1, p: "N1 あっての N2", m: "N2 có được là nhờ có N1", e: "健康あっての仕事だから、休むのも大切だよ。", t: "Công việc là thứ phải nhờ vào sức khỏe, nên nghỉ ngơi cũng quan trọng." },
+      { id: 2, p: "N/普通形 + とはいえ", m: "Tuy/Mặc dù nói là...", e: "もう退院したとはいえ、まだ病気が完全に治ったわけではない。", t: "Dù nói là đã xuất viện, nhưng bệnh vẫn chưa khỏi hoàn toàn." },
+      { id: 3, p: "N といえども", m: "Dẫu là.../Dù là...", e: "たとえ子供といえども、俺に従わない者には容赦しない。", t: "Dẫu là trẻ con, tôi cũng không nhượng bộ ai không tuân theo." },
+      { id: 4, p: "Vた ところで", m: "Cho dù…thì cũng…", e: "試験前日に勉強したところで、結果が変わるとは思えない。", t: "Dù có học thì kết quả cũng chẳng thay đổi." },
+      { id: 5, p: "普通形 + とあって", m: "Vì...nên (đương nhiên)", e: "15年ぶりの再会とあって、同窓会は大盛り上がりだった。", t: "Vì là hội ngộ sau 15 năm, buổi họp lớp vô cùng sôi nổi." },
+      { id: 6, p: "N/V + 手前", m: "Chính vì...trước mặt...", e: "子供たちの手前、だらしない姿を見せては体裁が悪い。", t: "Trước mặt trẻ con, nếu cho thấy bộ dạng luộm thuộm thì mất thể diện." },
+      { id: 7, p: "1 + 助数詞 + たりとも", m: "Dù chỉ 1…cũng không…", e: "あの日の屈辱は、一日たりとも忘れたことはない。", t: "Nỗi hổ thẹn đó, dù chỉ một ngày tôi cũng chưa bao giờ quên." },
+      { id: 8, p: "Vる/N + だに", m: "Chỉ cần...thôi, là cũng...", e: "明日のテストを考えるだに憂鬱になる。", t: "Chỉ cần nghĩ đến bài thi ngày mai là đã thấy chán nản." },
+      { id: 9, p: "N + すら", m: "Ngay cả…/Đến cả…", e: "彼は話すことすらできない状態だ。", t: "Anh ấy đang trong tình trạng đến nói chuyện cũng không thể." },
+      { id: 10, p: "普通形 + こととて", m: "Bởi vì lí do là…", e: "急なこととて、おもてなしもできず申し訳ありません。", t: "Bởi gấp gáp quá nên xin lỗi vì không tiếp đón chu đáo." },
+      { id: 11, p: "N/Vる + といったところだ", m: "Cũng chỉ.../Chỉ tầm...", e: "このスーパーの品揃えは、コンビニ以下といったところだ。", t: "Hàng hóa siêu thị này chỉ tầm dưới mức cửa hàng tiện lợi." },
+      { id: 12, p: "N + ではあるまいし", m: "Vì chẳng phải là...nên...", e: "子どもではあるまいし、わがままを押し通すものではない。", t: "Chẳng phải trẻ con, nên đừng khăng khăng ý kiến mình." },
+      { id: 13, p: "V + きらいがある", m: "Có kiểu/xu hướng…", e: "彼はなんでも一人で決めてしまうきらいがある。", t: "Anh ấy có xu hướng chuyện gì cũng tự mình quyết định." },
+      { id: 14, p: "Vる + 始末だ", m: "Cuối cùng thì…/Rốt cuộc…", e: "彼は怒り出して、暴言まで吐く始末だ。", t: "Anh ấy nổi khùng và cuối cùng thốt ra lời khiếm nhã." },
+      { id: 15, p: "N + ごとき", m: "Tầm như…/Những thứ như…", e: "遊びごときに必死になる事は無いですよ。", t: "Với việc như đi chơi, đâu cần dốc hết sức." },
+      { id: 16, p: "N + ときたら", m: "(Nói đến) N ấy à, thì...", e: "あいつときたら、平気で遅刻して、全然謝らない。", t: "Nói đến anh ta thì cứ dửng dưng đến muộn, không xin lỗi." },
+      { id: 17, p: "N/Aい + といったらない", m: "Vô cùng.../Khôn xiết", e: "彼の部屋は汚いといったらない。", t: "Căn phòng của anh ấy vô cùng bẩn." },
+      { id: 18, p: "Aな + 極まりない", m: "Vô cùng, cực kì", e: "軽装で富士山に登るなんて、危険極まりない。", t: "Leo núi Phú Sĩ với trang phục nhẹ, vô cùng nguy hiểm." },
+      { id: 19, p: "Vて + やまない", m: "Từ đáy lòng vẫn luôn...", e: "新人社員の成長を期待してやまない。", t: "Vô cùng kì vọng vào sự trưởng thành của nhân viên mới." },
+      { id: 20, p: "N + でなくてなんだろう", m: "Chẳng phải N thì là gì", e: "毎日子供のためにお弁当を作ることが、愛でなくなんだろう。", t: "Ngày nào cũng làm cơm hộp cho con, chẳng phải tình yêu thì là gì?" },
+      { id: 21, p: "N/V + なくして（は）", m: "Nếu không có…thì…", e: "両親の援助なくしては、生活できなかった。", t: "Nếu không có sự giúp đỡ của bố mẹ thì không thể sống được." },
+      { id: 22, p: "Vて + からというもの", m: "Kể từ sau khi…thì…", e: "家庭を持ってからというもの、自分の時間が難しくなった。", t: "Kể từ khi có gia đình, khó dành thời gian cho bản thân." },
+      { id: 23, p: "N + いかんで（は）", m: "Tùy vào N mà…", e: "テストの結果いかんでは、大学を辞めなければならない。", t: "Tùy vào kết quả thi mà có thể phải nghỉ học." },
+      { id: 24, p: "Vて + はばからない", m: "Chẳng ngại gì mà...", e: "彼は自分が一番優秀だと言ってはばからない。", t: "Anh ấy chẳng ngại tuyên bố mình là giỏi nhất." },
+      { id: 25, p: "Vて + はかなわない", m: "Thật khó chịu khi...", e: "給料を勝手に減らされてはかなわない。", t: "Thật khó chịu khi công ty tự ý giảm lương." },
+    ];
+
+    let mastered = [];
+    let idx = 0;
+    let tab = 'all';
+    let flipped = false;
+
+    // Load dữ liệu từ localStorage
+    function loadData() {
+      try {
+        mastered = JSON.parse(localStorage.getItem('n1_mastered_1a') || '[]');
+      } catch (e) {
+        mastered = [];
+      }
+    }
+
+    function saveData() {
+      try {
+        localStorage.setItem('n1_mastered_1a', JSON.stringify(mastered));
+      } catch (e) {
+        console.error('Không thể lưu dữ liệu');
+      }
+    }
+
+    function getCards() {
+      if (tab === 'all') return data;
+      if (tab === 'learning') return data.filter(c => !mastered.includes(c.id));
+      return data.filter(c => mastered.includes(c.id));
+    }
+
+    function render() {
+      const cards = getCards();
+      const card = cards[idx] || null;
+      const app = document.getElementById('app');
+      
+      if (!card) {
+        app.innerHTML = `
+          <div class="max-w-md mx-auto">
+            <div class="flex items-center justify-between mb-4">
+              <a href="index.html" class="text-white hover:text-yellow-300 transition text-lg">← Menu</a>
+              <h1 class="text-white text-xl font-bold">N1 (1-25)</h1>
+              <div class="w-16"></div>
+            </div>
+            <div class="text-white text-center mt-20 text-lg">Không có thẻ nào trong mục này</div>
+          </div>
+        `;
+        return;
+      }
+      
+      app.innerHTML = `
+        <div class="max-w-md mx-auto pb-4">
+          <div class="flex items-center justify-between mb-4">
+            <a href="index.html" class="text-white hover:text-yellow-300 transition text-lg">← Menu</a>
+            <h1 class="text-white text-xl font-bold">N1 (1-25)</h1>
+            <div class="w-16"></div>
+          </div>
+          
+          <div class="flex justify-center gap-2 mb-4 flex-wrap">
+            <button id="btn-all" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'all' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white'}">
+              Tất cả (${data.length})
+            </button>
+            <button id="btn-learning" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'learning' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white'}">
+              Chưa thuộc (${data.length - mastered.length})
+            </button>
+            <button id="btn-mastered" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'mastered' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white'}">
+              Đã thuộc (${mastered.length})
+            </button>
+          </div>
+
+          <div class="text-white text-center mb-3 text-lg">${idx + 1} / ${cards.length}</div>
+          
+          <div id="flashcard" class="flip-card h-80 cursor-pointer ${flipped ? 'flipped' : ''}">
+            <div class="flip-card-inner relative w-full h-full">
+              <div class="flip-card-front absolute inset-0 bg-white rounded-2xl shadow-2xl flex flex-col items-center justify-center p-6">
+                <div class="text-sm text-gray-400 mb-2">#${card.id}</div>
+                <div class="text-2xl font-bold text-indigo-700 text-center leading-relaxed px-2">${card.p}</div>
+                <div class="text-gray-400 mt-6 text-sm">👆 Nhấn để lật thẻ</div>
+              </div>
+              <div class="flip-card-back absolute inset-0 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl shadow-2xl p-4 overflow-auto">
+                <div class="text-indigo-700 font-bold mb-2">📖 Nghĩa:</div>
+                <div class="text-gray-800 mb-3 text-base">${card.m}</div>
+                <div class="text-indigo-700 font-bold mb-2">📝 Ví dụ:</div>
+                <div class="text-gray-800 mb-2 text-sm">${card.e}</div>
+                <div class="text-green-700 italic text-sm">→ ${card.t}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-center items-center gap-3 mt-6">
+            <button id="btn-prev" class="w-14 h-14 bg-white/20 hover:bg-white/40 active:bg-white/50 rounded-full text-white text-2xl font-bold transition flex items-center justify-center">←</button>
+            <button id="btn-master" class="px-5 py-3 rounded-lg font-medium transition ${mastered.includes(card.id) ? 'bg-green-500 text-white active:bg-green-600' : 'bg-white text-gray-700 active:bg-gray-200'}">
+              ${mastered.includes(card.id) ? '✓ Đã thuộc' : '☐ Đánh dấu thuộc'}
+            </button>
+            <button id="btn-next" class="w-14 h-14 bg-white/20 hover:bg-white/40 active:bg-white/50 rounded-full text-white text-2xl font-bold transition flex items-center justify-center">→</button>
+          </div>
+        </div>
+      `;
+
+      // Gắn sự kiện sau khi render
+      document.getElementById('flashcard').addEventListener('click', flipCard);
+      document.getElementById('btn-all').addEventListener('click', () => setTab('all'));
+      document.getElementById('btn-learning').addEventListener('click', () => setTab('learning'));
+      document.getElementById('btn-mastered').addEventListener('click', () => setTab('mastered'));
+      document.getElementById('btn-prev').addEventListener('click', prev);
+      document.getElementById('btn-next').addEventListener('click', next);
+      document.getElementById('btn-master').addEventListener('click', () => toggleMaster(card.id));
+    }
+
+    function setTab(t) { 
+      tab = t; 
+      idx = 0; 
+      flipped = false; 
+      render(); 
+    }
+
+    function flipCard(e) { 
+      e.stopPropagation();
+      flipped = !flipped; 
+      render(); 
+    }
+
+    function next() { 
+      const cards = getCards(); 
+      flipped = false; 
+      idx = (idx + 1) % cards.length; 
+      render(); 
+    }
+
+    function prev() { 
+      const cards = getCards(); 
+      flipped = false; 
+      idx = (idx - 1 + cards.length) % cards.length; 
+      render(); 
+    }
+
+    function toggleMaster(id) {
+      if (mastered.includes(id)) {
+        mastered = mastered.filter(x => x !== id);
+      } else {
+        mastered.push(id);
+      }
+      saveData();
+      render();
+    }
+
+    // Khởi động app
+    loadData();
+    render();
+  </script>
+</body>
+</html>

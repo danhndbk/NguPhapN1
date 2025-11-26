@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Học ngữ pháp N1 với 107 mẫu câu - Flashcard interactive">
+  <title>N1 Grammar Flashcard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      overscroll-behavior: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 p-4">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-8 mt-8">
+      <h1 class="text-4xl md:text-5xl font-bold text-white mb-2">🎌 N1 文法 Flashcard</h1>
+      <p class="text-white/80 text-lg">Học ngữ pháp N1 với 107 mẫu câu</p>
+      <p class="text-white/60 text-sm mt-2">✨ Tối ưu cho cả Desktop & Mobile</p>
+    </div>
+
+    <!-- Statistics -->
+    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 mb-6">
+      <h2 class="text-white text-xl font-bold mb-4">📊 Thống kê tiến độ</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white/20 rounded-lg p-4 text-center">
+          <div class="text-3xl font-bold text-yellow-300">107</div>
+          <div class="text-white/80 text-sm mt-1">Tổng thẻ</div>
+        </div>
+        <div class="bg-white/20 rounded-lg p-4 text-center">
+          <div class="text-3xl font-bold text-green-400" id="mastered-cards">0</div>
+          <div class="text-white/80 text-sm mt-1">Đã thuộc</div>
+        </div>
+        <div class="bg-white/20 rounded-lg p-4 text-center">
+          <div class="text-3xl font-bold text-orange-400" id="learning-cards">107</div>
+          <div class="text-white/80 text-sm mt-1">Đang học</div>
+        </div>
+        <div class="bg-white/20 rounded-lg p-4 text-center">
+          <div class="text-3xl font-bold text-blue-400" id="progress">0%</div>
+          <div class="text-white/80 text-sm mt-1">Tiến độ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flashcard Parts -->
+    <div class="grid md:grid-cols-2 gap-4 mb-6">
+      <!-- Part 1a -->
+      <a href="flashcard-1a.html" class="block">
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 hover:bg-white/20 active:bg-white/25 transition cursor-pointer">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-white text-xl font-bold">📘 Phần 1a</h3>
+            <span class="bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">25 mẫu</span>
+          </div>
+          <p class="text-white/70 mb-3">Mẫu 1-25</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-green-400" id="mastered-1a">0 đã thuộc</span>
+            <span class="text-white/60">→ Học ngay</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Part 1b -->
+      <a href="flashcard-1b.html" class="block">
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 hover:bg-white/20 active:bg-white/25 transition cursor-pointer">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-white text-xl font-bold">📗 Phần 1b</h3>
+            <span class="bg-blue-400 text-white px-3 py-1 rounded-full text-sm font-bold">25 mẫu</span>
+          </div>
+          <p class="text-white/70 mb-3">Mẫu 26-50</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-green-400" id="mastered-1b">0 đã thuộc</span>
+            <span class="text-white/60">→ Học ngay</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Part 1c -->
+      <a href="flashcard-1c.html" class="block">
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 hover:bg-white/20 active:bg-white/25 transition cursor-pointer">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-white text-xl font-bold">📙 Phần 1c</h3>
+            <span class="bg-green-400 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">22 mẫu</span>
+          </div>
+          <p class="text-white/70 mb-3">Mẫu 51-72</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-green-400" id="mastered-1c">0 đã thuộc</span>
+            <span class="text-white/60">→ Học ngay</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Part 1d -->
+      <a href="flashcard-1d.html" class="block">
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 hover:bg-white/20 active:bg-white/25 transition cursor-pointer">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-white text-xl font-bold">📕 Phần 1d</h3>
+            <span class="bg-purple-400 text-white px-3 py-1 rounded-full text-sm font-bold">35 mẫu</span>
+          </div>
+          <p class="text-white/70 mb-3">Mẫu 73-107</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-green-400" id="mastered-1d">0 đã thuộc</span>
+            <span class="text-white/60">→ Học ngay</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- All Cards Button -->
+    <a href="flashcard-all.html" class="block">
+      <div class="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl p-6 hover:shadow-2xl active:shadow-xl transition cursor-pointer mb-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-gray-900 text-2xl font-bold mb-1">🎯 Học tất cả 107 mẫu</h3>
+            <p class="text-gray-800">Ôn tập toàn bộ ngữ pháp N1</p>
+          </div>
+          <div class="text-4xl">→</div>
+        </div>
+      </div>
+    </a>
+
+    <!-- Reset Progress -->
+    <div class="text-center mb-6">
+      <button onclick="resetProgress()" class="bg-red-500/20 hover:bg-red-500/30 active:bg-red-500/40 text-white px-6 py-3 rounded-lg transition">
+        🔄 Đặt lại tiến độ
+      </button>
+    </div>
+
+    <!-- Instructions -->
+    <div class="bg-white/5 backdrop-blur-sm rounded-xl p-4 mb-6">
+      <h3 class="text-white font-bold mb-2">📌 Hướng dẫn sử dụng:</h3>
+      <ul class="text-white/70 text-sm space-y-1">
+        <li>✓ Nhấn vào thẻ để lật xem nghĩa và ví dụ</li>
+        <li>✓ Dùng nút ← → để chuyển thẻ</li>
+        <li>✓ Đánh dấu "Đã thuộc" để theo dõi tiến độ</li>
+        <li>✓ Tiến độ được lưu tự động trên thiết bị</li>
+        <li>✓ Trên iPhone: Thêm vào Home Screen để dùng như app</li>
+      </ul>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center text-white/60 text-sm pb-8">
+      <p>💡 Tiến độ của bạn được lưu tự động</p>
+      <p class="mt-2">Made with ❤️ for JLPT N1 learners</p>
+      <p class="mt-2">
+        <a href="https://github.com/yourusername/n1-grammar-flashcard" target="_blank" class="text-blue-400 hover:text-blue-300">
+          ⭐ Star on GitHub
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function updateStats() {
+      const parts = ['1a', '1b', '1c', '1d'];
+      let totalMastered = 0;
+
+      parts.forEach(part => {
+        try {
+          const mastered = JSON.parse(localStorage.getItem(`n1_mastered_${part}`) || '[]');
+          totalMastered += mastered.length;
+          const elem = document.getElementById(`mastered-${part}`);
+          if (elem) elem.textContent = `${mastered.length} đã thuộc`;
+        } catch (e) {
+          console.error(`Error loading ${part}:`, e);
+        }
+      });
+
+      document.getElementById('mastered-cards').textContent = totalMastered;
+      document.getElementById('learning-cards').textContent = 107 - totalMastered;
+      document.getElementById('progress').textContent = Math.round((totalMastered / 107) * 100) + '%';
+    }
+
+    function resetProgress() {
+      if (confirm('Bạn có chắc muốn xóa toàn bộ tiến độ học?')) {
+        ['1a', '1b', '1c', '1d'].forEach(part => {
+          try {
+            localStorage.removeItem(`n1_mastered_${part}`);
+          } catch (e) {
+            console.error(`Error resetting ${part}:`, e);
+          }
+        });
+        updateStats();
+        alert('✅ Đã đặt lại tiến độ!');
+      }
+    }
+
+    // Update stats khi load trang
+    updateStats();
+    
+    // Update stats mỗi 2 giây
+    setInterval(updateStats, 2000);
+
+    // Update stats khi focus vào trang (quay lại từ trang khác)
+    window.addEventListener('focus', updateStats);
+  </script>
+</body>
+</html>
