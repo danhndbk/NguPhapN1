@@ -6,6 +6,13 @@
   <title>N1 Grammar Flashcard - Phần 1b</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;  /* 👈 thêm dòng này */
+    }
     .flip-card { perspective: 1000px; }
     .flip-card-inner { transition: transform 0.6s; transform-style: preserve-3d; }
     .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
