@@ -6,11 +6,42 @@
   <title>N1 Grammar Flashcard - Tất cả</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .flip-card { perspective: 1000px; }
-    .flip-card-inner { transition: transform 0.6s; transform-style: preserve-3d; }
-    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
-    .flip-card-front, .flip-card-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-    .flip-card-back { transform: rotateY(180deg); }
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;  /* 👈 thêm dòng này */
+    }
+    body {
+      overscroll-behavior: none;
+      touch-action: pan-y;
+    }
+    .flip-card { 
+      perspective: 1000px;
+      -webkit-perspective: 1000px;
+    }
+    .flip-card-inner { 
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner { 
+      transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back { 
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .flip-card-back { 
+      transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+    }
+    button {
+      -webkit-appearance: none;
+      appearance: none;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-indigo-900 to-purple-900 p-4">
