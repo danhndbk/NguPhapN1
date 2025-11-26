@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N1 Grammar Flashcard - Phần 1b</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .flip-card { perspective: 1000px; }
+    .flip-card-inner { transition: transform 0.6s; transform-style: preserve-3d; }
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card-front, .flip-card-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    .flip-card-back { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-900 to-purple-900 p-4">
+  <div id="app"></div>
+
+  <script>
+    const data = [
+      { id: 26, p: "Vない + ないまでも", m: "Dù không đến mức...nhưng tối thiểu thì cũng...", e: "毎月帰ってこいとは言わないまでも、お盆と正月ぐらいは帰ってきてほしい。", t: "Dù không đến mức mỗi tháng phải về, nhưng mong con tối thiểu cũng trở về vào dịp lễ Obon và Năm mới." },
+      { id: 27, p: "N + ずくめ", m: "Hầu như chỉ toàn…", e: "今月は残業ずくめで、ずっと体調が悪い。", t: "Tháng này chỉ toàn làm thêm ngoài giờ nên tình trạng cơ thể rất không ổn." },
+      { id: 28, p: "Vない + でもない", m: "Không phải là không...", e: "君の気持ちもわからないでもないが、今はまだ時期尚早だと思うよ。", t: "Tôi không phải không hiểu tâm trạng của anh nhưng mà tôi nghĩ bây giờ vẫn còn quá sớm." },
+      { id: 29, p: "Vない + ではすまない", m: "Nhất định/chắc chắn phải...", e: "会社の情報を盗んだ社員は、処分しないではすまないだろう。", t: "Chắc chắn là phải xử lý những nhân viên đã lấy cắp thông tin của công ty." },
+      { id: 30, p: "Vない + ないものか", m: "Có cách nào...không nhỉ?", e: "面接は上手くいかなかったが、なんとか合格できないものか。", t: "Mặc dù buổi phỏng vấn không diễn ra suôn sẻ nhưng không biết có cách nào để đỗ được không nhỉ?" },
+      { id: 31, p: "N(数) + からある/からいる/からする", m: "Hơn/Trên ~", e: "運動不足解消のために、毎日10キロからある道を歩いて通勤している。", t: "Để xóa bỏ tình trạng thiếu vận động, mỗi ngày tôi đi bộ đi làm trên con đường dài hơn 10 km." },
+      { id: 32, p: "「発話文」+ とばかりに", m: "Như thể muốn nói rằng...", e: "相手チームが疲れているようだったので、ここぞとばかりに攻め入った。", t: "Vì đội đối phương trông đã có vẻ mệt rồi nên chúng tôi đã tiến lên tấn công như thể muốn nói rằng đây là cơ hội không thể bỏ qua." },
+      { id: 33, p: "N1 + たる + N2", m: "Với cương vị là...thì...", e: "日本人たるもの、いつでもおもてなしの心を忘れてはならない。", t: "Với cương vị là người Nhật Bản, cho dù bất kì lúc nào cũng không được quên tấm lòng hiếu khách." },
+      { id: 34, p: "N + ともなると", m: "Khi (trở thành)...thì...", e: "五月ともなると、徐々に蒸し暑くなってくる。", t: "Khi bước sang tháng 5, trời sẽ nóng dần lên." },
+      { id: 35, p: "N + と/が 相まって", m: "Cùng với, cộng với, kết hợp với...", e: "忙しさに、体調の悪さが相まって、勤務中に倒れてしまった。", t: "Công việc bận rộn cộng với tình hình sức khỏe không được tốt nên tôi đã bị ngất trong giờ làm." },
+      { id: 36, p: "N1であれ N2であれ", m: "Dù là N1 hay N2 thì cũng vẫn...", e: "相手が子供であれ高齢者であれ、彼はどんな人にでも親切だ。", t: "Anh ấy đối với bất kì ai cũng đều thân thiện cho dù đối phương là trẻ con hay người cao tuổi." },
+      { id: 37, p: "Vる + ともなく", m: "Vô thức/Vô tình...Không chủ đích làm...", e: "人生について考えるともなく考えていたら、朝になっていた。", t: "Dù không chủ đích nghĩ về cuộc đời nhưng cứ nghĩ bâng quơ mãi đã đến sáng rồi." },
+      { id: 38, p: "N1 + といい N2 + といい", m: "Cả N1, cả N2 đều...", e: "彼の仕事は質の高さといい速さといい、文句のつけようがない。", t: "Chất lượng công việc của anh ấy vừa tốt, tốc độ lại nhanh nên không có gì phải bàn cãi." },
+      { id: 39, p: "Vます + つ + Vます + つ", m: "Lúc thì...lúc thì...", e: "ボロボロになった船が、海の上で浮きつ沈みつしている。", t: "Chiếc thuyền đã rách tươm rồi nên cứ lúc chìm lúc nổi ở trên biển." },
+      { id: 40, p: "V1ては V2", m: "Cứ hết V1 lại V2", e: "食べては寝て、食べては寝るという生活を続けていたら、体重が増加した。", t: "Cứ tiếp tục duy trì cuộc sống hết ăn rồi lại ngủ, nên tôi đã bị tăng cân." },
+      { id: 41, p: "普通形 + といおうか...といおうか", m: "Cũng không biết gọi là...hay là...", e: "彼はお人好しといおうか騙されやすいといおうか、何というか純粋すぎる性格だ。", t: "Anh ấy không biết nên gọi là nhẹ dạ cả tin hay dễ bị lừa nữa mà nói chung là tính cách quá ngây thơ." },
+      { id: 42, p: "N1 + といわず、N2 + といわず", m: "Cả N1, N2, tất cả đều...", e: "私の仕事は、早朝といわず深夜といわず、お客様に対応しなければならない。", t: "Công việc của tôi bất kể sáng sớm hay khi tối muộn thì lúc nào cũng phải tư vấn trả lời khách hàng." },
+      { id: 43, p: "ながらに/ながらの + N", m: "Vẫn trong trạng thái", e: "彼女は涙ながらに感謝の言葉を何度も繰り返した。", t: "Cô ấy vừa khóc vừa nói đi nói lại nhiều lần câu cảm ơn." },
+      { id: 44, p: "N + かたがた", m: "Và cũng là để…/Nhân tiện là cũng…", e: "新年の挨拶かたがた、親戚や友人の家を訪ねる。", t: "Tôi sẽ ghé thăm nhà họ hàng và bạn thân, nhân tiện gửi lời chào đầu năm mới." },
+      { id: 45, p: "N/Vます + がてら", m: "Tiện thể/Nhân thể", e: "夕飯の買い物がてら、友達の家によって少しお喋りしてきた。", t: "Nhân tiện lúc mua đồ cho bữa tối, tôi ghé qua nhà bạn và trò chuyện một lát." },
+      { id: 46, p: "Vる/Vた + が早いか", m: "Ngay khi vừa mới…thì đã…", e: "家に帰ってきたが早いか、娘は遊びに出かけてしまった。", t: "Ngay khi vừa mới về đến nhà là con gái đã ra ngoài đi chơi." },
+      { id: 47, p: "Aい/Nの + ところ(を)", m: "Trong lúc.../Mặc dù...", e: "お休みのところ申し訳ありませんが、至急加藤までご連絡ください。", t: "Rất xin lỗi vì đã gọi anh chị trong lúc nghỉ ngơi nhưng xin vui lòng liên hệ với Katou càng sớm càng tốt." },
+      { id: 48, p: "Nの/Vる + かたわら", m: "Bên cạnh/một mặt…(thì còn làm)", e: "彼女は大学に通うかたわら、ボランティア活動を行っている。", t: "Cô ấy bên cạnh việc học ở trường Đại học, còn tiến hành các hoạt động tình nguyện." },
+      { id: 49, p: "N1 + ならではの + N2", m: "Chỉ có N1 mới có", e: "金閣寺や清水寺は、京都ならではの観光地だ。", t: "Chùa Kinkaku-ji và chùa Kiyomizu-dera là những điểm du lịch tham quan chỉ có ở Kyoto mà thôi." },
+      { id: 50, p: "A + ならいざしらず + B", m: "Nếu A thì đã đành nhưng B thì", e: "知らなかったならいざしらず、悪いことだと知っていて罪を犯すことは許されない。", t: "Nếu mà không biết đã đành, biết đó là việc xấu nhưng vẫn phạm tội thì không thể tha thứ được." },
+    ];
+
+    let mastered = JSON.parse(localStorage.getItem('n1_mastered_1b') || '[]');
+    let idx = 0;
+    let tab = 'all';
+    let flipped = false;
+
+    function saveMastered() {
+      localStorage.setItem('n1_mastered_1b', JSON.stringify(mastered));
+    }
+
+    function getCards() {
+      if (tab === 'all') return data;
+      if (tab === 'learning') return data.filter(c => !mastered.includes(c.id));
+      return data.filter(c => mastered.includes(c.id));
+    }
+
+    function render() {
+      const cards = getCards();
+      const card = cards[idx] || null;
+      const app = document.getElementById('app');
+      
+      app.innerHTML = `
+        <h1 class="text-white text-2xl font-bold text-center mb-4">N1 文法 Flashcard (26-50)</h1>
+        
+        <div class="flex justify-center gap-2 mb-4 flex-wrap">
+          <button onclick="setTab('all')" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'all' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white hover:bg-white/30'}">
+            Tất cả (${data.length})
+          </button>
+          <button onclick="setTab('learning')" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'learning' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white hover:bg-white/30'}">
+            Chưa thuộc (${data.length - mastered.length})
+          </button>
+          <button onclick="setTab('mastered')" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'mastered' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white hover:bg-white/30'}">
+            Đã thuộc (${mastered.length})
+          </button>
+        </div>
+
+        ${cards.length === 0 ? `
+          <div class="text-white text-center mt-10 text-lg">Không có thẻ nào trong mục này</div>
+        ` : `
+          <div class="text-white text-center mb-3 text-lg">${idx + 1} / ${cards.length}</div>
+          
+          <div class="flip-card mx-auto max-w-md h-80 cursor-pointer ${flipped ? 'flipped' : ''}" onclick="flipCard()">
+            <div class="flip-card-inner relative w-full h-full">
+              <div class="flip-card-front absolute inset-0 bg-white rounded-2xl shadow-2xl flex flex-col items-center justify-center p-6">
+                <div class="text-sm text-gray-400 mb-2">#${card.id}</div>
+                <div class="text-2xl font-bold text-indigo-700 text-center leading-relaxed">${card.p}</div>
+                <div class="text-gray-400 mt-6 text-sm">👆 Nhấn để lật thẻ</div>
+              </div>
+              <div class="flip-card-back absolute inset-0 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl shadow-2xl p-5 overflow-auto">
+                <div class="text-indigo-700 font-bold mb-2 text-lg">📖 Nghĩa:</div>
+                <div class="text-gray-800 mb-4 text-lg">${card.m}</div>
+                <div class="text-indigo-700 font-bold mb-2">📝 Ví dụ:</div>
+                <div class="text-gray-800 mb-2">${card.e}</div>
+                <div class="text-green-700 italic">→ ${card.t}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-center items-center gap-4 mt-6">
+            <button onclick="prev()" class="w-14 h-14 bg-white/20 hover:bg-white/40 rounded-full text-white text-2xl font-bold transition">←</button>
+            <button onclick="toggleMaster(${card.id})" class="px-5 py-3 rounded-lg font-medium transition ${mastered.includes(card.id) ? 'bg-green-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}">
+              ${mastered.includes(card.id) ? '✓ Đã thuộc' : '☐ Đánh dấu thuộc'}
+            </button>
+            <button onclick="next()" class="w-14 h-14 bg-white/20 hover:bg-white/40 rounded-full text-white text-2xl font-bold transition">→</button>
+          </div>
+        `}
+      `;
+    }
+
+    function setTab(t) { tab = t; idx = 0; flipped = false; render(); }
+    function flipCard() { flipped = !flipped; render(); }
+    function next() { const cards = getCards(); flipped = false; idx = (idx + 1) % cards.length; render(); }
+    function prev() { const cards = getCards(); flipped = false; idx = (idx - 1 + cards.length) % cards.length; render(); }
+    function toggleMaster(id) {
+      if (mastered.includes(id)) mastered = mastered.filter(x => x !== id);
+      else mastered.push(id);
+      saveMastered();
+      render();
+    }
+
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N1 Grammar Flashcard - Phần 1c</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .flip-card { perspective: 1000px; }
+    .flip-card-inner { transition: transform 0.6s; transform-style: preserve-3d; }
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card-front, .flip-card-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    .flip-card-back { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-900 to-purple-900 p-4">
+  <div id="app"></div>
+
+  <script>
+    const data = [
+      { id: 51, p: "普通形 + なら + 普通形 + で", m: "Đưa ra mặt còn lại của một vấn đề", e: "背が高いなら高いで、大変なこともあるんだよ。", t: "Cao cũng có những khó khăn của cao." },
+      { id: 52, p: "N1なりN2なり/V1るなりV2るなり", m: "Hoặc là...này rồi...này", e: "引っ越しても、電話なりメールなり連絡してね。", t: "Kể cả anh có chuyển nhà thì hãy cứ gọi điện hoặc là gửi mail liên lạc với tôi nhé." },
+      { id: 53, p: "Vます/普通形 + なりに/なりの", m: "Hết sức của/Theo cách của", e: "スポーツをする上で、背が低くても低いなりのメリットはある。", t: "Trong khi chơi thể thao, ngay cả thấp cũng có những ưu điểm của thấp." },
+      { id: 54, p: "N + にあって", m: "Ở trong hoàn cảnh/bối cảnh", e: "IT社会にあって、リモートワークを導入する会社が増えてきている。", t: "Trong xã hội công nghệ thông tin, những công ty áp dụng phương thức làm việc trực tuyến ngày càng tăng." },
+      { id: 55, p: "N + に至っては", m: "Còn đến…thì", e: "彼女は好き嫌いが多く、野菜に至ってはほとんど食べない。", t: "Cô ấy có nhiều món thích và ghét nhưng đến rau thì hầu như không ăn luôn." },
+      { id: 56, p: "N + に至るまで", m: "Đến cả", e: "この歌はお年寄りから子どもに至るまで、あらゆる世代に愛されている。", t: "Bài hát này được tất cả các thế hệ yêu thích, từ những người cao tuổi cho đến cả bọn trẻ con." },
+      { id: 57, p: "N + にかこつけ", m: "Lấy cớ…để", e: "出張にかこつけて、経費で遊園地に行くなんて許されない。", t: "Lấy cớ đi công tác để đi khu vui chơi bằng tiền công ty thì quả thật không thể tha thứ được." },
+      { id: 58, p: "N/Vる + にかたくない", m: "Không khó để", e: "大好きな恋人に振られてしまった彼の気持ちは、想像にかたくない。", t: "Không khó để có thể hình dung ra cảm xúc của anh ấy khi bị người anh ấy yêu nhất chia tay." },
+      { id: 59, p: "Vる/Vない/Aい/Aな + に越したことはない", m: "Không gì tốt hơn là", e: "大切な資料なら、毎日バックアップを取っておくに越したことはない。", t: "Nếu là những tài liệu quan trọng thì tốt nhất nên sao lưu nó hàng ngày." },
+      { id: 60, p: "N + にして", m: "(Mốc thời gian, điều kiện)", e: "入社5年目にして、ようやく給料が少し上がった。", t: "Vào công ty 5 năm trời mà mãi lương mới tăng lên một chút." },
+      { id: 61, p: "N + に即（則）して", m: "Dựa theo, hợp với", e: "現場では、状況に即したすばやい判断が求められる。", t: "Ở nơi sản xuất rất cần những phán đoán nhanh chóng dựa theo tình hình." },
+      { id: 62, p: "Vる + にたえない", m: "Không…nổi, không đáng để…", e: "汚い言葉ばかり使って話すので、彼の話は聞くにたえない。", t: "Vì anh ta toàn dùng những từ ngữ bẩn thỉu nên câu chuyện của anh ta không đáng để nghe." },
+      { id: 63, p: "N + にたえない", m: "Cảm thấy vô cùng…", e: "あの有名なギア先生にお会いできて、感激にたえません。", t: "Được gặp thầy Nghĩa nổi tiếng đó làm tôi cảm thấy vô cùng cảm động." },
+      { id: 64, p: "普通形 + ならまだしも", m: "Thì đã đành", e: "直接だけならまだしも、陰で人の悪口を言うなんて良くないよ。", t: "Nếu mà nói xấu trực tiếp thì còn đỡ, thế nhưng nói xấu người khác ở sau lưng lại là không tốt đâu." },
+      { id: 65, p: "Vる + なり", m: "Vừa mới...thì đã...", e: "彼は夜遅くまで遊んでいたので、家へ帰るなり母親に叱られた。", t: "Bởi anh ta đi chơi tới tận đêm muộn nên khi vừa mới về đến nhà đã bị mẹ mắng." },
+      { id: 66, p: "N/Vる + にたる", m: "Đáng để, đủ để", e: "授業料は高額だが、これまでの実績を見ると受講するにたるものだ。", t: "Tiền học phí rất đắt, nhưng nếu nhìn vào kết quả thực tế từ trước đến nay thì quả thật là khóa học đáng để học." },
+      { id: 67, p: "N/Vる + にとどまらず", m: "Không chỉ dừng lại ở", e: "彼女の歌唱力は日本国内にとどまらず、世界中で称賛されている。", t: "Khả năng ca hát của cô ấy không chỉ dừng lại trong phạm vi Nhật Bản mà còn được tán dương trên toàn thế giới." },
+      { id: 68, p: "N/Vる + にはあたらない", m: "Chẳng cần thiết phải, không đến mức", e: "彼のやったことはたしかに悪いことだけど、犯罪にはあたらないそうだ。", t: "Việc anh ta làm đúng là việc xấu, nhưng có vẻ nó không đến mức là một tội ác." },
+      { id: 69, p: "N/普通形の + にひきかえ", m: "Trái ngược với", e: "勤勉な兄にひきかえ、弟は毎日あそんでばかりで本当にだらしない。", t: "Trái ngược với người anh rất chăm chỉ thì người em suốt ngày chơi bời lêu lổng, thật là vô tích sự." },
+      { id: 70, p: "Vる/Vない/N/Aい/Aな + にもほどがある", m: "Cũng vừa phải thôi", e: "この資料を一時間で処理しろなんて、冗談にもほどがあるよ。", t: "Bắt xử lý cái tài liệu này trong một giờ thì đúng là có đùa cũng vừa phải thôi chứ." },
+      { id: 71, p: "N + にもまして", m: "Hơn cả", e: "今年のお祭りは、例年にもまして盛り上がっているようだ。", t: "Lễ hội năm nay có vẻ sôi động hơn mọi năm." },
+      { id: 72, p: "N + の至り", m: "Cực kì, vô cùng", e: "このような栄養ある賞をいただきまして、光栄の至りでございます。", t: "Tôi cảm thấy vô cùng hân hạnh khi nhận được giải thưởng vinh dự như thế này." },
+    ];
+
+    let mastered = JSON.parse(localStorage.getItem('n1_mastered_1c') || '[]');
+    let idx = 0;
+    let tab = 'all';
+    let flipped = false;
+
+    function saveMastered() {
+      localStorage.setItem('n1_mastered_1c', JSON.stringify(mastered));
+    }
+
+    function getCards() {
+      if (tab === 'all') return data;
+      if (tab === 'learning') return data.filter(c => !mastered.includes(c.id));
+      return data.filter(c => mastered.includes(c.id));
+    }
+
+    function render() {
+      const cards = getCards();
+      const card = cards[idx] || null;
+      const app = document.getElementById('app');
+      
+      app.innerHTML = `
+        <h1 class="text-white text-2xl font-bold text-center mb-4">N1 文法 Flashcard (51-72)</h1>
+        
+        <div class="flex justify-center gap-2 mb-4 flex-wrap">
+          <button onclick="setTab('all')" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'all' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white hover:bg-white/30'}">
+            Tất cả (${data.length})
+          </button>
+          <button onclick="setTab('learning')" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'learning' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white hover:bg-white/30'}">
+            Chưa thuộc (${data.length - mastered.length})
+          </button>
+          <button onclick="setTab('mastered')" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'mastered' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white hover:bg-white/30'}">
+            Đã thuộc (${mastered.length})
+          </button>
+        </div>
+
+        ${cards.length === 0 ? `
+          <div class="text-white text-center mt-10 text-lg">Không có thẻ nào trong mục này</div>
+        ` : `
+          <div class="text-white text-center mb-3 text-lg">${idx + 1} / ${cards.length}</div>
+          
+          <div class="flip-card mx-auto max-w-md h-80 cursor-pointer ${flipped ? 'flipped' : ''}" onclick="flipCard()">
+            <div class="flip-card-inner relative w-full h-full">
+              <div class="flip-card-front absolute inset-0 bg-white rounded-2xl shadow-2xl flex flex-col items-center justify-center p-6">
+                <div class="text-sm text-gray-400 mb-2">#${card.id}</div>
+                <div class="text-2xl font-bold text-indigo-700 text-center leading-relaxed">${card.p}</div>
+                <div class="text-gray-400 mt-6 text-sm">👆 Nhấn để lật thẻ</div>
+              </div>
+              <div class="flip-card-back absolute inset-0 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl shadow-2xl p-5 overflow-auto">
+                <div class="text-indigo-700 font-bold mb-2 text-lg">📖 Nghĩa:</div>
+                <div class="text-gray-800 mb-4 text-lg">${card.m}</div>
+                <div class="text-indigo-700 font-bold mb-2">📝 Ví dụ:</div>
+                <div class="text-gray-800 mb-2">${card.e}</div>
+                <div class="text-green-700 italic">→ ${card.t}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-center items-center gap-4 mt-6">
+            <button onclick="prev()" class="w-14 h-14 bg-white/20 hover:bg-white/40 rounded-full text-white text-2xl font-bold transition">←</button>
+            <button onclick="toggleMaster(${card.id})" class="px-5 py-3 rounded-lg font-medium transition ${mastered.includes(card.id) ? 'bg-green-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}">
+              ${mastered.includes(card.id) ? '✓ Đã thuộc' : '☐ Đánh dấu thuộc'}
+            </button>
+            <button onclick="next()" class="w-14 h-14 bg-white/20 hover:bg-white/40 rounded-full text-white text-2xl font-bold transition">→</button>
+          </div>
+        `}
+      `;
+    }
+
+    function setTab(t) { tab = t; idx = 0; flipped = false; render(); }
+    function flipCard() { flipped = !flipped; render(); }
+    function next() { const cards = getCards(); flipped = false; idx = (idx + 1) % cards.length; render(); }
+    function prev() { const cards = getCards(); flipped = false; idx = (idx - 1 + cards.length) % cards.length; render(); }
+    function toggleMaster(id) {
+      if (mastered.includes(id)) mastered = mastered.filter(x => x !== id);
+      else mastered.push(id);
+      saveMastered();
+      render();
+    }
+
+    render();
+  </script>
+</body>
+</html>
