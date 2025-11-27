@@ -2,8 +2,10 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>N1 Grammar Flashcard - Phần 1b</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>N1 Grammar Flashcard (26-50)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * {
@@ -11,7 +13,7 @@
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       user-select: none;
-      touch-action: manipulation;  /* 👈 thêm dòng này */
+	  touch-action: manipulation;  /* 👈 thêm dòng này */
     }
     body {
       overscroll-behavior: none;
@@ -76,13 +78,25 @@
       { id: 50, p: "A + ならいざしらず + B", m: "Nếu A thì đã đành nhưng B thì", e: "知らなかったならいざしらず、悪いことだと知っていて罪を犯すことは許されない。", t: "Nếu mà không biết đã đành, biết đó là việc xấu nhưng vẫn phạm tội thì không thể tha thứ được." },
     ];
 
-    let mastered = JSON.parse(localStorage.getItem('n1_mastered_1b') || '[]');
+    let mastered = [];
     let idx = 0;
     let tab = 'all';
     let flipped = false;
 
-    function saveMastered() {
-      localStorage.setItem('n1_mastered_1b', JSON.stringify(mastered));
+    function loadData() {
+      try {
+        mastered = JSON.parse(localStorage.getItem('n1_mastered_1b') || '[]');
+      } catch (e) {
+        mastered = [];
+      }
+    }
+
+    function saveData() {
+      try {
+        localStorage.setItem('n1_mastered_1b', JSON.stringify(mastered));
+      } catch (e) {
+        console.error('Không thể lưu dữ liệu');
+      }
     }
 
     function getCards() {
@@ -96,77 +110,91 @@
       const card = cards[idx] || null;
       const app = document.getElementById('app');
       
+      if (!card) {
+        app.innerHTML = `
+          <div class="max-w-md mx-auto">
+            <div class="flex items-center justify-between mb-4">
+              <a href="menu.html" class="text-white hover:text-yellow-300 transition text-lg">← Menu</a>
+              <h1 class="text-white text-xl font-bold">N1 (26-50)</h1>
+              <div class="w-16"></div>
+            </div>
+            <div class="text-white text-center mt-20 text-lg">Không có thẻ nào trong mục này</div>
+          </div>
+        `;
+        return;
+      }
+      
       app.innerHTML = `
-        <h1 class="text-white text-2xl font-bold text-center mb-4">N1 文法 Flashcard (26-50)</h1>
-        
-        <div class="flex justify-center gap-2 mb-4 flex-wrap">
-          <button onclick="setTab('all')" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'all' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white hover:bg-white/30'}">
-            Tất cả (${data.length})
-          </button>
-          <button onclick="setTab('learning')" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'learning' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white hover:bg-white/30'}">
-            Chưa thuộc (${data.length - mastered.length})
-          </button>
-          <button onclick="setTab('mastered')" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'mastered' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white hover:bg-white/30'}">
-            Đã thuộc (${mastered.length})
-          </button>
-        </div>
+        <div class="max-w-md mx-auto pb-4">
+          <div class="flex items-center justify-between mb-4">
+            <a href="menu.html" class="text-white hover:text-yellow-300 transition text-lg">← Menu</a>
+            <h1 class="text-white text-xl font-bold">N1 (26-50)</h1>
+            <div class="w-16"></div>
+          </div>
+          
+          <div class="flex justify-center gap-2 mb-4 flex-wrap">
+            <button id="btn-all" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'all' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white'}">
+              Tất cả (${data.length})
+            </button>
+            <button id="btn-learning" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'learning' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white'}">
+              Chưa thuộc (${data.length - mastered.length})
+            </button>
+            <button id="btn-mastered" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'mastered' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white'}">
+              Đã thuộc (${mastered.length})
+            </button>
+          </div>
 
-        ${cards.length === 0 ? `
-          <div class="text-white text-center mt-10 text-lg">Không có thẻ nào trong mục này</div>
-        ` : `
           <div class="text-white text-center mb-3 text-lg">${idx + 1} / ${cards.length}</div>
           
-          <div class="flip-card mx-auto max-w-md h-80 cursor-pointer ${flipped ? 'flipped' : ''}" onclick="flipCard()">
+          <div id="flashcard" class="flip-card h-80 cursor-pointer ${flipped ? 'flipped' : ''}">
             <div class="flip-card-inner relative w-full h-full">
               <div class="flip-card-front absolute inset-0 bg-white rounded-2xl shadow-2xl flex flex-col items-center justify-center p-6">
                 <div class="text-sm text-gray-400 mb-2">#${card.id}</div>
-                <div class="text-2xl font-bold text-indigo-700 text-center leading-relaxed">${card.p}</div>
+                <div class="text-2xl font-bold text-indigo-700 text-center leading-relaxed px-2">${card.p}</div>
                 <div class="text-gray-400 mt-6 text-sm">👆 Nhấn để lật thẻ</div>
               </div>
-              <div class="flip-card-back absolute inset-0 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl shadow-2xl p-5 overflow-auto">
-                <div class="text-indigo-700 font-bold mb-2 text-lg">📖 Nghĩa:</div>
-                <div class="text-gray-800 mb-4 text-lg">${card.m}</div>
+              <div class="flip-card-back absolute inset-0 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl shadow-2xl p-4 overflow-auto">
+                <div class="text-indigo-700 font-bold mb-2">📖 Nghĩa:</div>
+                <div class="text-gray-800 mb-3 text-base">${card.m}</div>
                 <div class="text-indigo-700 font-bold mb-2">📝 Ví dụ:</div>
-                <div class="text-gray-800 mb-2">${card.e}</div>
-                <div class="text-green-700 italic">→ ${card.t}</div>
+                <div class="text-gray-800 mb-2 text-sm">${card.e}</div>
+                <div class="text-green-700 italic text-sm">→ ${card.t}</div>
               </div>
             </div>
           </div>
 
-          <div class="flex justify-center items-center gap-4 mt-6">
-            <button onclick="prev()" class="w-14 h-14 bg-white/20 hover:bg-white/40 rounded-full text-white text-2xl font-bold transition">←</button>
-            <button onclick="toggleMaster(${card.id})" class="px-5 py-3 rounded-lg font-medium transition ${mastered.includes(card.id) ? 'bg-green-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}">
+          <div class="flex justify-center items-center gap-3 mt-6">
+            <button id="btn-prev" class="w-14 h-14 bg-white/20 hover:bg-white/40 active:bg-white/50 rounded-full text-white text-2xl font-bold transition flex items-center justify-center">←</button>
+            <button id="btn-master" class="px-5 py-3 rounded-lg font-medium transition ${mastered.includes(card.id) ? 'bg-green-500 text-white active:bg-green-600' : 'bg-white text-gray-700 active:bg-gray-200'}">
               ${mastered.includes(card.id) ? '✓ Đã thuộc' : '☐ Đánh dấu thuộc'}
             </button>
-            <button onclick="next()" class="w-14 h-14 bg-white/20 hover:bg-white/40 rounded-full text-white text-2xl font-bold transition">→</button>
+            <button id="btn-next" class="w-14 h-14 bg-white/20 hover:bg-white/40 active:bg-white/50 rounded-full text-white text-2xl font-bold transition flex items-center justify-center">→</button>
           </div>
-        `}
+        </div>
       `;
+
+      document.getElementById('flashcard').addEventListener('click', flipCard);
+      document.getElementById('btn-all').addEventListener('click', () => setTab('all'));
+      document.getElementById('btn-learning').addEventListener('click', () => setTab('learning'));
+      document.getElementById('btn-mastered').addEventListener('click', () => setTab('mastered'));
+      document.getElementById('btn-prev').addEventListener('click', prev);
+      document.getElementById('btn-next').addEventListener('click', next);
+      document.getElementById('btn-master').addEventListener('click', () => toggleMaster(card.id));
     }
 
     function setTab(t) { tab = t; idx = 0; flipped = false; render(); }
-    function flipCard() { flipped = !flipped; render(); }
+    function flipCard(e) { e.stopPropagation(); flipped = !flipped; render(); }
     function next() { const cards = getCards(); flipped = false; idx = (idx + 1) % cards.length; render(); }
     function prev() { const cards = getCards(); flipped = false; idx = (idx - 1 + cards.length) % cards.length; render(); }
     function toggleMaster(id) {
       if (mastered.includes(id)) mastered = mastered.filter(x => x !== id);
       else mastered.push(id);
-      saveMastered();
+      saveData();
       render();
     }
 
+    loadData();
     render();
   </script>
-  <!-- <script>
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function (event) {
-      const now = new Date().getTime();
-      if (now - lastTouchEnd <= 300) {
-        event.preventDefault();  // chặn double tap zoom
-      }
-      lastTouchEnd = now;
-    }, { passive: false });
-  </script> -->
-  
 </body>
 </html>

@@ -2,8 +2,10 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>N1 Grammar Flashcard - Tất cả</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>N1 Grammar Flashcard - Tất cả (1-107)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * {
@@ -11,7 +13,7 @@
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       user-select: none;
-      touch-action: manipulation;  /* 👈 thêm dòng này */
+	  touch-action: manipulation;  /* 👈 thêm dòng này */
     }
     body {
       overscroll-behavior: none;
@@ -47,15 +49,29 @@
 <body class="min-h-screen bg-gradient-to-br from-indigo-900 to-purple-900 p-4">
   <div id="app"></div>
 
-  <script src="n1-grammar-data.js"></script>
   <script>
-    // Tải dữ liệu từ file riêng hoặc định nghĩa ở đây
-    const allData = [
-      ...Array.from({length: 25}, (_, i) => ({id: i+1, part: '1a'})),
-      ...Array.from({length: 25}, (_, i) => ({id: i+26, part: '1b'})),
-      ...Array.from({length: 22}, (_, i) => ({id: i+51, part: '1c'})),
-      ...Array.from({length: 35}, (_, i) => ({id: i+73, part: '1d'}))
-    ];
+    // Tạo danh sách 107 mẫu với thông tin phần
+    const allData = [];
+    
+    // Phần 1a (1-25)
+    for (let i = 1; i <= 25; i++) {
+      allData.push({ id: i, part: '1a', partName: 'Phần 1a' });
+    }
+    
+    // Phần 1b (26-50)
+    for (let i = 26; i <= 50; i++) {
+      allData.push({ id: i, part: '1b', partName: 'Phần 1b' });
+    }
+    
+    // Phần 1c (51-72)
+    for (let i = 51; i <= 72; i++) {
+      allData.push({ id: i, part: '1c', partName: 'Phần 1c' });
+    }
+    
+    // Phần 1d (73-107)
+    for (let i = 73; i <= 107; i++) {
+      allData.push({ id: i, part: '1d', partName: 'Phần 1d' });
+    }
 
     let mastered = [];
     let idx = 0;
@@ -65,28 +81,35 @@
     function loadAllMastered() {
       mastered = [];
       ['1a', '1b', '1c', '1d'].forEach(part => {
-        const partMastered = JSON.parse(localStorage.getItem(`n1_mastered_${part}`) || '[]');
-        mastered = [...mastered, ...partMastered];
+        try {
+          const partMastered = JSON.parse(localStorage.getItem(`n1_mastered_${part}`) || '[]');
+          mastered = [...mastered, ...partMastered];
+        } catch (e) {
+          console.error(`Error loading ${part}:`, e);
+        }
       });
     }
 
     function saveMastered(id) {
-      // Xác định card thuộc phần nào
       let part = '';
       if (id <= 25) part = '1a';
       else if (id <= 50) part = '1b';
       else if (id <= 72) part = '1c';
       else part = '1d';
 
-      const partMastered = JSON.parse(localStorage.getItem(`n1_mastered_${part}`) || '[]');
-      if (mastered.includes(id)) {
-        const newMastered = partMastered.filter(x => x !== id);
-        localStorage.setItem(`n1_mastered_${part}`, JSON.stringify(newMastered));
-      } else {
-        partMastered.push(id);
-        localStorage.setItem(`n1_mastered_${part}`, JSON.stringify(partMastered));
+      try {
+        const partMastered = JSON.parse(localStorage.getItem(`n1_mastered_${part}`) || '[]');
+        if (mastered.includes(id)) {
+          const newMastered = partMastered.filter(x => x !== id);
+          localStorage.setItem(`n1_mastered_${part}`, JSON.stringify(newMastered));
+        } else {
+          partMastered.push(id);
+          localStorage.setItem(`n1_mastered_${part}`, JSON.stringify(partMastered));
+        }
+        loadAllMastered();
+      } catch (e) {
+        console.error('Error saving:', e);
       }
-      loadAllMastered();
     }
 
     function getCards() {
@@ -100,62 +123,99 @@
       const card = cards[idx] || null;
       const app = document.getElementById('app');
       
+      if (!card) {
+        app.innerHTML = `
+          <div class="max-w-md mx-auto">
+            <div class="flex items-center justify-between mb-4">
+              <a href="menu.html" class="text-white hover:text-yellow-300 transition text-lg">← Menu</a>
+              <h1 class="text-white text-xl font-bold">N1 (1-107)</h1>
+              <div class="w-16"></div>
+            </div>
+            <div class="text-white text-center mt-20 text-lg">Không có thẻ nào trong mục này</div>
+          </div>
+        `;
+        return;
+      }
+      
       app.innerHTML = `
-        <div class="max-w-md mx-auto">
+        <div class="max-w-md mx-auto pb-4">
           <div class="flex items-center justify-between mb-4">
-            <a href="index.html" class="text-white hover:text-yellow-300 transition">← Menu</a>
-            <h1 class="text-white text-2xl font-bold">N1 文法 (1-107)</h1>
+            <a href="menu.html" class="text-white hover:text-yellow-300 transition text-lg">← Menu</a>
+            <h1 class="text-white text-xl font-bold">N1 (1-107)</h1>
             <div class="w-16"></div>
           </div>
           
           <div class="flex justify-center gap-2 mb-4 flex-wrap">
-            <button onclick="setTab('all')" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'all' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white hover:bg-white/30'}">
+            <button id="btn-all" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'all' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white'}">
               Tất cả (${allData.length})
             </button>
-            <button onclick="setTab('learning')" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'learning' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white hover:bg-white/30'}">
+            <button id="btn-learning" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'learning' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white'}">
               Chưa thuộc (${allData.length - mastered.length})
             </button>
-            <button onclick="setTab('mastered')" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'mastered' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white hover:bg-white/30'}">
+            <button id="btn-mastered" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'mastered' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white'}">
               Đã thuộc (${mastered.length})
             </button>
           </div>
 
-          ${cards.length === 0 ? `
-            <div class="text-white text-center mt-10 text-lg">Không có thẻ nào trong mục này</div>
-          ` : `
-            <div class="text-white text-center mb-3 text-lg">${idx + 1} / ${cards.length}</div>
-            
-            <div class="flip-card h-80 cursor-pointer ${flipped ? 'flipped' : ''}" onclick="flipCard()">
-              <div class="flip-card-inner relative w-full h-full">
-                <div class="flip-card-front absolute inset-0 bg-white rounded-2xl shadow-2xl flex flex-col items-center justify-center p-6">
-                  <div class="text-sm text-gray-400 mb-2">#${card.id}</div>
-                  <div class="text-2xl font-bold text-indigo-700 text-center leading-relaxed">Mẫu ${card.id}</div>
-                  <div class="text-gray-400 mt-6 text-sm">👆 Nhấn để lật thẻ</div>
-                  <div class="text-xs text-gray-400 mt-2">Phần ${card.part}</div>
+          <div class="text-white text-center mb-3">
+            <div class="text-lg">${idx + 1} / ${cards.length}</div>
+            <div class="text-sm text-white/70 mt-1">${card.partName} - Mẫu #${card.id}</div>
+          </div>
+          
+          <div id="flashcard" class="flip-card h-80 cursor-pointer ${flipped ? 'flipped' : ''}">
+            <div class="flip-card-inner relative w-full h-full">
+              <div class="flip-card-front absolute inset-0 bg-white rounded-2xl shadow-2xl flex flex-col items-center justify-center p-6">
+                <div class="text-sm text-gray-400 mb-2">#${card.id}</div>
+                <div class="text-2xl font-bold text-indigo-700 text-center leading-relaxed px-2">Mẫu ${card.id}</div>
+                <div class="text-gray-400 mt-6 text-sm">👆 Nhấn để xem chi tiết</div>
+                <div class="mt-4 px-4 py-2 bg-indigo-100 rounded-lg">
+                  <div class="text-xs text-indigo-600">${card.partName}</div>
                 </div>
-                <div class="flip-card-back absolute inset-0 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl shadow-2xl p-5 overflow-auto">
-                  <div class="text-center text-gray-600">
-                    <p class="mb-4">Vui lòng học theo từng phần để xem nội dung chi tiết</p>
-                    <p class="text-sm">Mẫu này thuộc <span class="font-bold">Phần ${card.part}</span></p>
+              </div>
+              <div class="flip-card-back absolute inset-0 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl shadow-2xl p-5 overflow-auto flex flex-col items-center justify-center">
+                <div class="text-center">
+                  <div class="text-2xl mb-4">📚</div>
+                  <div class="text-gray-700 mb-3 font-semibold">Mẫu ngữ pháp #${card.id}</div>
+                  <div class="text-sm text-gray-600 mb-4">Thuộc ${card.partName} (Mẫu ${card.id <= 25 ? '1-25' : card.id <= 50 ? '26-50' : card.id <= 72 ? '51-72' : '73-107'})</div>
+                  <div class="bg-white/60 rounded-lg p-4 text-left">
+                    <p class="text-sm text-gray-700 mb-3">💡 <strong>Gợi ý:</strong> Để xem chi tiết mẫu ngữ pháp này với nghĩa và ví dụ đầy đủ, vui lòng học theo từng phần:</p>
+                    <div class="space-y-2 text-xs">
+                      <a href="flashcard-1a.html" class="block text-indigo-600 hover:text-indigo-800">→ Phần 1a (mẫu 1-25)</a>
+                      <a href="flashcard-1b.html" class="block text-blue-600 hover:text-blue-800">→ Phần 1b (mẫu 26-50)</a>
+                      <a href="flashcard-1c.html" class="block text-green-600 hover:text-green-800">→ Phần 1c (mẫu 51-72)</a>
+                      <a href="flashcard-1d.html" class="block text-purple-600 hover:text-purple-800">→ Phần 1d (mẫu 73-107)</a>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="flex justify-center items-center gap-4 mt-6">
-              <button onclick="prev()" class="w-14 h-14 bg-white/20 hover:bg-white/40 rounded-full text-white text-2xl font-bold transition">←</button>
-              <button onclick="toggleMaster(${card.id})" class="px-5 py-3 rounded-lg font-medium transition ${mastered.includes(card.id) ? 'bg-green-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}">
-                ${mastered.includes(card.id) ? '✓ Đã thuộc' : '☐ Đánh dấu thuộc'}
-              </button>
-              <button onclick="next()" class="w-14 h-14 bg-white/20 hover:bg-white/40 rounded-full text-white text-2xl font-bold transition">→</button>
-            </div>
-          `}
+          <div class="flex justify-center items-center gap-3 mt-6">
+            <button id="btn-prev" class="w-14 h-14 bg-white/20 hover:bg-white/40 active:bg-white/50 rounded-full text-white text-2xl font-bold transition flex items-center justify-center">←</button>
+            <button id="btn-master" class="px-5 py-3 rounded-lg font-medium transition ${mastered.includes(card.id) ? 'bg-green-500 text-white active:bg-green-600' : 'bg-white text-gray-700 active:bg-gray-200'}">
+              ${mastered.includes(card.id) ? '✓ Đã thuộc' : '☐ Đánh dấu thuộc'}
+            </button>
+            <button id="btn-next" class="w-14 h-14 bg-white/20 hover:bg-white/40 active:bg-white/50 rounded-full text-white text-2xl font-bold transition flex items-center justify-center">→</button>
+          </div>
+          
+          <div class="mt-6 text-center">
+            <a href="index.html" class="text-white/60 text-sm hover:text-white/80">← Quay về Menu để học theo từng phần</a>
+          </div>
         </div>
       `;
+
+      document.getElementById('flashcard').addEventListener('click', flipCard);
+      document.getElementById('btn-all').addEventListener('click', () => setTab('all'));
+      document.getElementById('btn-learning').addEventListener('click', () => setTab('learning'));
+      document.getElementById('btn-mastered').addEventListener('click', () => setTab('mastered'));
+      document.getElementById('btn-prev').addEventListener('click', prev);
+      document.getElementById('btn-next').addEventListener('click', next);
+      document.getElementById('btn-master').addEventListener('click', () => toggleMaster(card.id));
     }
 
     function setTab(t) { tab = t; idx = 0; flipped = false; render(); }
-    function flipCard() { flipped = !flipped; render(); }
+    function flipCard(e) { e.stopPropagation(); flipped = !flipped; render(); }
     function next() { const cards = getCards(); flipped = false; idx = (idx + 1) % cards.length; render(); }
     function prev() { const cards = getCards(); flipped = false; idx = (idx - 1 + cards.length) % cards.length; render(); }
     function toggleMaster(id) {
@@ -166,15 +226,5 @@
     loadAllMastered();
     render();
   </script>
-  <!-- <script>
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function (event) {
-      const now = new Date().getTime();
-      if (now - lastTouchEnd <= 300) {
-        event.preventDefault();  // chặn double tap zoom
-      }
-      lastTouchEnd = now;
-    }, { passive: false });
-  </script> -->
 </body>
 </html>
