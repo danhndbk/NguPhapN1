@@ -13,11 +13,14 @@
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       user-select: none;
-      touch-action: manipulation;  /* 👈 thêm dòng này */
+      touch-action: manipulation;
     }
     body {
       overscroll-behavior: none;
       touch-action: pan-y;
+    }
+    button, a {
+      touch-action: manipulation;
     }
     .flip-card { 
       perspective: 1000px;
@@ -82,6 +85,8 @@
     let idx = 0;
     let tab = 'all';
     let flipped = false;
+    let isShuffled = false;
+    let shuffledData = [];
 
     // Load dữ liệu từ localStorage
     function loadData() {
@@ -100,10 +105,33 @@
       }
     }
 
+    // Hàm xáo trộn mảng
+    function shuffleArray(array) {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    }
+
+    function toggleShuffle() {
+      isShuffled = !isShuffled;
+      if (isShuffled) {
+        // Tạo một danh sách ngẫu nhiên mới
+        shuffledData = shuffleArray(data);
+      }
+      // Reset về thẻ đầu tiên (của danh sách mới hoặc danh sách gốc)
+      idx = 0;
+      flipped = false;
+      render();
+    }
+
     function getCards() {
-      if (tab === 'all') return data;
-      if (tab === 'learning') return data.filter(c => !mastered.includes(c.id));
-      return data.filter(c => mastered.includes(c.id));
+      const sourceData = isShuffled ? shuffledData : data;
+      if (tab === 'all') return sourceData;
+      if (tab === 'learning') return sourceData.filter(c => !mastered.includes(c.id));
+      return sourceData.filter(c => mastered.includes(c.id));
     }
 
     function render() {
@@ -115,20 +143,26 @@
         app.innerHTML = `
           <div class="max-w-md mx-auto">
             <div class="flex items-center justify-between mb-4">
-              <a href="menu.html" class="text-white hover:text-yellow-300 transition text-lg">← Menu</a>
+              <a href="index.html" class="text-white hover:text-yellow-300 transition text-lg">← Menu</a>
               <h1 class="text-white text-xl font-bold">N1 (1-25)</h1>
               <div class="w-16"></div>
             </div>
             <div class="text-white text-center mt-20 text-lg">Không có thẻ nào trong mục này</div>
+            <div class="flex justify-center mt-6">
+                 <button id="btn-all-empty" class="px-4 py-2 rounded-lg text-sm font-medium bg-white/20 text-white hover:bg-white/30 transition">
+                   Xem tất cả thẻ
+                 </button>
+            </div>
           </div>
         `;
+        document.getElementById('btn-all-empty')?.addEventListener('click', () => setTab('all'));
         return;
       }
       
       app.innerHTML = `
         <div class="max-w-md mx-auto pb-4">
           <div class="flex items-center justify-between mb-4">
-            <a href="menu.html" class="text-white hover:text-yellow-300 transition text-lg">← Menu</a>
+            <a href="index.html" class="text-white hover:text-yellow-300 transition text-lg">← Menu</a>
             <h1 class="text-white text-xl font-bold">N1 (1-25)</h1>
             <div class="w-16"></div>
           </div>
@@ -143,9 +177,15 @@
             <button id="btn-mastered" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'mastered' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white'}">
               Đã thuộc (${mastered.length})
             </button>
+            <button id="btn-shuffle" class="px-4 py-2 rounded-lg text-sm font-medium transition ${isShuffled ? 'bg-green-400 text-gray-900' : 'bg-white/20 text-white'}">
+              ${isShuffled ? '🔀 Đang xáo' : '🔀 Xáo trộn'}
+            </button>
           </div>
 
-          <div class="text-white text-center mb-3 text-lg">${idx + 1} / ${cards.length}</div>
+          <div class="text-white text-center mb-3 text-lg">
+             ${idx + 1} / ${cards.length} 
+             ${isShuffled ? '<span class="text-xs ml-1 opacity-75">(Ngẫu nhiên)</span>' : ''}
+          </div>
           
           <div id="flashcard" class="flip-card h-80 cursor-pointer ${flipped ? 'flipped' : ''}">
             <div class="flip-card-inner relative w-full h-full">
@@ -174,11 +214,15 @@
         </div>
       `;
 
-      // Gắn sự kiện sau khi render
+      // Gắn sự kiện (Event Listeners)
       document.getElementById('flashcard').addEventListener('click', flipCard);
       document.getElementById('btn-all').addEventListener('click', () => setTab('all'));
       document.getElementById('btn-learning').addEventListener('click', () => setTab('learning'));
       document.getElementById('btn-mastered').addEventListener('click', () => setTab('mastered'));
+      
+      // SỬA: Đã thêm sự kiện cho nút Shuffle
+      document.getElementById('btn-shuffle').addEventListener('click', toggleShuffle);
+      
       document.getElementById('btn-prev').addEventListener('click', prev);
       document.getElementById('btn-next').addEventListener('click', next);
       document.getElementById('btn-master').addEventListener('click', () => toggleMaster(card.id));
@@ -200,6 +244,7 @@
     function next() { 
       const cards = getCards(); 
       flipped = false; 
+      // Nếu đang shuffle, cards đã được xáo trộn sẵn, nên chỉ cần tăng index
       idx = (idx + 1) % cards.length; 
       render(); 
     }
