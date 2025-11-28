@@ -13,7 +13,7 @@
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       user-select: none;
-	  touch-action: manipulation;  /* 👈 thêm dòng này */
+      touch-action: manipulation;
     }
     body {
       overscroll-behavior: none;
@@ -50,33 +50,130 @@
   <div id="app"></div>
 
   <script>
-    // Tạo danh sách 107 mẫu với thông tin phần
-    const allData = [];
-    
-    // Phần 1a (1-25)
-    for (let i = 1; i <= 25; i++) {
-      allData.push({ id: i, part: '1a', partName: 'Phần 1a' });
-    }
-    
-    // Phần 1b (26-50)
-    for (let i = 26; i <= 50; i++) {
-      allData.push({ id: i, part: '1b', partName: 'Phần 1b' });
-    }
-    
-    // Phần 1c (51-72)
-    for (let i = 51; i <= 72; i++) {
-      allData.push({ id: i, part: '1c', partName: 'Phần 1c' });
-    }
-    
-    // Phần 1d (73-107)
-    for (let i = 73; i <= 107; i++) {
-      allData.push({ id: i, part: '1d', partName: 'Phần 1d' });
-    }
+    // Dữ liệu tổng hợp từ tất cả các phần (1a, 1b, 1c, 1d)
+    const allData = [
+      // Phần 1a (1-25)
+      { id: 1, p: "N1 あっての N2", m: "N2 có được là nhờ có N1", e: "健康あっての仕事だから、休むのも大切だよ。", t: "Công việc là thứ phải nhờ vào sức khỏe, nên nghỉ ngơi cũng quan trọng." },
+      { id: 2, p: "N/普通形 + とはいえ", m: "Tuy/Mặc dù nói là...", e: "もう退院したとはいえ、まだ病気が完全に治ったわけではない。", t: "Dù nói là đã xuất viện, nhưng bệnh vẫn chưa khỏi hoàn toàn." },
+      { id: 3, p: "N といえども", m: "Dẫu là.../Dù là...", e: "たとえ子供といえども、俺に従わない者には容赦しない。", t: "Dẫu là trẻ con, tôi cũng không nhượng bộ ai không tuân theo." },
+      { id: 4, p: "Vた ところで", m: "Cho dù…thì cũng…", e: "試験前日に勉強したところで、結果が変わるとは思えない。", t: "Dù có học thì kết quả cũng chẳng thay đổi." },
+      { id: 5, p: "普通形 + とあって", m: "Vì...nên (đương nhiên)", e: "15年ぶりの再会とあって、同窓会は大盛り上がりだった。", t: "Vì là hội ngộ sau 15 năm, buổi họp lớp vô cùng sôi nổi." },
+      { id: 6, p: "N/V + 手前", m: "Chính vì...trước mặt...", e: "子供たちの手前、だらしない姿を見せては体裁が悪い。", t: "Trước mặt trẻ con, nếu cho thấy bộ dạng luộm thuộm thì mất thể diện." },
+      { id: 7, p: "1 + 助数詞 + たりとも", m: "Dù chỉ 1…cũng không…", e: "あの日の屈辱は、一日たりとも忘れたことはない。", t: "Nỗi hổ thẹn đó, dù chỉ một ngày tôi cũng chưa bao giờ quên." },
+      { id: 8, p: "Vる/N + だに", m: "Chỉ cần...thôi, là cũng...", e: "明日のテストを考えるだに憂鬱になる。", t: "Chỉ cần nghĩ đến bài thi ngày mai là đã thấy chán nản." },
+      { id: 9, p: "N + すら", m: "Ngay cả…/Đến cả…", e: "彼は話すことすらできない状態だ。", t: "Anh ấy đang trong tình trạng đến nói chuyện cũng không thể." },
+      { id: 10, p: "普通形 + こととて", m: "Bởi vì lí do là…", e: "急なこととて、おもてなしもできず申し訳ありません。", t: "Bởi gấp gáp quá nên xin lỗi vì không tiếp đón chu đáo." },
+      { id: 11, p: "N/Vる + といったところだ", m: "Cũng chỉ.../Chỉ tầm...", e: "このスーパーの品揃えは、コンビニ以下といったところだ。", t: "Hàng hóa siêu thị này chỉ tầm dưới mức cửa hàng tiện lợi." },
+      { id: 12, p: "N + ではあるまいし", m: "Vì chẳng phải là...nên...", e: "子どもではあるまいし、わがままを押し通すものではない。", t: "Chẳng phải trẻ con, nên đừng khăng khăng ý kiến mình." },
+      { id: 13, p: "V + きらいがある", m: "Có kiểu/xu hướng…", e: "彼はなんでも一人で決めてしまうきらいがある。", t: "Anh ấy có xu hướng chuyện gì cũng tự mình quyết định." },
+      { id: 14, p: "Vる + 始末だ", m: "Cuối cùng thì…/Rốt cuộc…", e: "彼は怒り出して、暴言まで吐く始末だ。", t: "Anh ấy nổi khùng và cuối cùng thốt ra lời khiếm nhã." },
+      { id: 15, p: "N + ごとき", m: "Tầm như…/Những thứ như…", e: "遊びごときに必死になる事は無いですよ。", t: "Với việc như đi chơi, đâu cần dốc hết sức." },
+      { id: 16, p: "N + ときたら", m: "(Nói đến) N ấy à, thì...", e: "あいつときたら、平気で遅刻して、全然謝らない。", t: "Nói đến anh ta thì cứ dửng dưng đến muộn, không xin lỗi." },
+      { id: 17, p: "N/Aい + といったらない", m: "Vô cùng.../Khôn xiết", e: "彼の部屋は汚いといったらない。", t: "Căn phòng của anh ấy vô cùng bẩn." },
+      { id: 18, p: "Aな + 極まりない", m: "Vô cùng, cực kì", e: "軽装で富士山に登るなんて、危険極まりない。", t: "Leo núi Phú Sĩ với trang phục nhẹ, vô cùng nguy hiểm." },
+      { id: 19, p: "Vて + やまない", m: "Từ đáy lòng vẫn luôn...", e: "新人社員の成長を期待してやまない。", t: "Vô cùng kì vọng vào sự trưởng thành của nhân viên mới." },
+      { id: 20, p: "N + でなくてなんだろう", m: "Chẳng phải N thì là gì", e: "毎日子供のためにお弁当を作ることが、愛でなくなんだろう。", t: "Ngày nào cũng làm cơm hộp cho con, chẳng phải tình yêu thì là gì?" },
+      { id: 21, p: "N/V + なくして（は）", m: "Nếu không có…thì…", e: "両親の援助なくしては、生活できなかった。", t: "Nếu không có sự giúp đỡ của bố mẹ thì không thể sống được." },
+      { id: 22, p: "Vて + からというもの", m: "Kể từ sau khi…thì…", e: "家庭を持ってからというもの、自分の時間が難しくなった。", t: "Kể từ khi có gia đình, khó dành thời gian cho bản thân." },
+      { id: 23, p: "N + いかんで（は）", m: "Tùy vào N mà…", e: "テストの結果いかんでは、大学を辞めなければならない。", t: "Tùy vào kết quả thi mà có thể phải nghỉ học." },
+      { id: 24, p: "Vて + はばからない", m: "Chẳng ngại gì mà...", e: "彼は自分が一番優秀だと言ってはばからない。", t: "Anh ấy chẳng ngại tuyên bố mình là giỏi nhất." },
+      { id: 25, p: "Vて + はかなわない", m: "Thật khó chịu khi...", e: "給料を勝手に減らされてはかなわない。", t: "Thật khó chịu khi công ty tự ý giảm lương." },
+      
+      // Phần 1b (26-50)
+      { id: 26, p: "Vない + ないまでも", m: "Dù không đến mức...nhưng tối thiểu thì cũng...", e: "毎月帰ってこいとは言わないまでも、お盆と正月ぐらいは帰ってきてほしい。", t: "Dù không đến mức mỗi tháng phải về, nhưng mong con tối thiểu cũng trở về vào dịp lễ Obon và Năm mới." },
+      { id: 27, p: "N + ずくめ", m: "Hầu như chỉ toàn…", e: "今月は残業ずくめで、ずっと体調が悪い。", t: "Tháng này chỉ toàn làm thêm ngoài giờ nên tình trạng cơ thể rất không ổn." },
+      { id: 28, p: "Vない + でもない", m: "Không phải là không...", e: "君の気持ちもわからないでもないが、今はまだ時期尚早だと思うよ。", t: "Tôi không phải không hiểu tâm trạng của anh nhưng mà tôi nghĩ bây giờ vẫn còn quá sớm." },
+      { id: 29, p: "Vない + ではすまない", m: "Nhất định/chắc chắn phải...", e: "会社の情報を盗んだ社員は、処分しないではすまないだろう。", t: "Chắc chắn là phải xử lý những nhân viên đã lấy cắp thông tin của công ty." },
+      { id: 30, p: "Vない + ないものか", m: "Có cách nào...không nhỉ?", e: "面接は上手くいかなかったが、なんとか合格できないものか。", t: "Mặc dù buổi phỏng vấn không diễn ra suôn sẻ nhưng không biết có cách nào để đỗ được không nhỉ?" },
+      { id: 31, p: "N(数) + からある/からいる/からする", m: "Hơn/Trên ~", e: "運動不足解消のために、毎日10キロからある道を歩いて通勤している。", t: "Để xóa bỏ tình trạng thiếu vận động, mỗi ngày tôi đi bộ đi làm trên con đường dài hơn 10 km." },
+      { id: 32, p: "「発話文」+ とばかりに", m: "Như thể muốn nói rằng...", e: "相手チームが疲れているようだったので、ここぞとばかりに攻め入った。", t: "Vì đội đối phương trông đã có vẻ mệt rồi nên chúng tôi đã tiến lên tấn công như thể muốn nói rằng đây là cơ hội không thể bỏ qua." },
+      { id: 33, p: "N1 + たる + N2", m: "Với cương vị là...thì...", e: "日本人たるもの、いつでもおもてなしの心を忘れてはならない。", t: "Với cương vị là người Nhật Bản, cho dù bất kì lúc nào cũng không được quên tấm lòng hiếu khách." },
+      { id: 34, p: "N + ともなると", m: "Khi (trở thành)...thì...", e: "五月ともなると、徐々に蒸し暑くなってくる。", t: "Khi bước sang tháng 5, trời sẽ nóng dần lên." },
+      { id: 35, p: "N + と/が 相まって", m: "Cùng với, cộng với, kết hợp với...", e: "忙しさに、体調の悪さが相まって、勤務中に倒れてしまった。", t: "Công việc bận rộn cộng với tình hình sức khỏe không được tốt nên tôi đã bị ngất trong giờ làm." },
+      { id: 36, p: "N1であれ N2であれ", m: "Dù là N1 hay N2 thì cũng vẫn...", e: "相手が子供であれ高齢者であれ、彼はどんな人にでも親切だ。", t: "Anh ấy đối với bất kì ai cũng đều thân thiện cho dù đối phương là trẻ con hay người cao tuổi." },
+      { id: 37, p: "Vる + ともなく", m: "Vô thức/Vô tình...Không chủ đích làm...", e: "人生について考えるともなく考えていたら、朝になっていた。", t: "Dù không chủ đích nghĩ về cuộc đời nhưng cứ nghĩ bâng quơ mãi đã đến sáng rồi." },
+      { id: 38, p: "N1 + といい N2 + といい", m: "Cả N1, cả N2 đều...", e: "彼の仕事は質の高さといい速さといい、文句のつけようがない。", t: "Chất lượng công việc của anh ấy vừa tốt, tốc độ lại nhanh nên không có gì phải bàn cãi." },
+      { id: 39, p: "Vます + つ + Vます + つ", m: "Lúc thì...lúc thì...", e: "ボロボロになった船が、海の上で浮きつ沈みつしている。", t: "Chiếc thuyền đã rách tươm rồi nên cứ lúc chìm lúc nổi ở trên biển." },
+      { id: 40, p: "V1ては V2", m: "Cứ hết V1 lại V2", e: "食べては寝て、食べては寝るという生活を続けていたら、体重が増加した。", t: "Cứ tiếp tục duy trì cuộc sống hết ăn rồi lại ngủ, nên tôi đã bị tăng cân." },
+      { id: 41, p: "普通形 + といおうか...といおうか", m: "Cũng không biết gọi là...hay là...", e: "彼はお人好しといおうか騙されやすいといおうか、何というか純粋すぎる性格だ。", t: "Anh ấy không biết nên gọi là nhẹ dạ cả tin hay dễ bị lừa nữa mà nói chung là tính cách quá ngây thơ." },
+      { id: 42, p: "N1 + といわず、N2 + といわず", m: "Cả N1, N2, tất cả đều...", e: "私の仕事は、早朝といわず深夜といわず、お客様に対応しなければならない。", t: "Công việc của tôi bất kể sáng sớm hay khi tối muộn thì lúc nào cũng phải tư vấn trả lời khách hàng." },
+      { id: 43, p: "ながらに/ながらの + N", m: "Vẫn trong trạng thái", e: "彼女は涙ながらに感謝の言葉を何度も繰り返した。", t: "Cô ấy vừa khóc vừa nói đi nói lại nhiều lần câu cảm ơn." },
+      { id: 44, p: "N + かたがた", m: "Và cũng là để…/Nhân tiện là cũng…", e: "新年の挨拶かたがた、親戚や友人の家を訪ねる。", t: "Tôi sẽ ghé thăm nhà họ hàng và bạn thân, nhân tiện gửi lời chào đầu năm mới." },
+      { id: 45, p: "N/Vます + がてら", m: "Tiện thể/Nhân thể", e: "夕飯の買い物がてら、友達の家によって少しお喋りしてきた。", t: "Nhân tiện lúc mua đồ cho bữa tối, tôi ghé qua nhà bạn và trò chuyện một lát." },
+      { id: 46, p: "Vる/Vた + が早いか", m: "Ngay khi vừa mới…thì đã…", e: "家に帰ってきたが早いか、娘は遊びに出かけてしまった。", t: "Ngay khi vừa mới về đến nhà là con gái đã ra ngoài đi chơi." },
+      { id: 47, p: "Aい/Nの + ところ(を)", m: "Trong lúc.../Mặc dù...", e: "お休みのところ申し訳ありませんが、至急加藤までご連絡ください。", t: "Rất xin lỗi vì đã gọi anh chị trong lúc nghỉ ngơi nhưng xin vui lòng liên hệ với Katou càng sớm càng tốt." },
+      { id: 48, p: "Nの/Vる + かたわら", m: "Bên cạnh/một mặt…(thì còn làm)", e: "彼女は大学に通うかたわら、ボランティア活動を行っている。", t: "Cô ấy bên cạnh việc học ở trường Đại học, còn tiến hành các hoạt động tình nguyện." },
+      { id: 49, p: "N1 + ならではの + N2", m: "Chỉ có N1 mới có", e: "金閣寺や清水寺は、京都ならではの観光地だ。", t: "Chùa Kinkaku-ji và chùa Kiyomizu-dera là những điểm du lịch tham quan chỉ có ở Kyoto mà thôi." },
+      { id: 50, p: "A + ならいざしらず + B", m: "Nếu A thì đã đành nhưng B thì", e: "知らなかったならいざしらず、悪いことだと知っていて罪を犯すことは許されない。", t: "Nếu mà không biết đã đành, biết đó là việc xấu nhưng vẫn phạm tội thì không thể tha thứ được." },
+      
+      // Phần 1c (51-75)
+      { id: 51, p: "普通形 + なら + 普通形 + で", m: "Đưa ra mặt còn lại của một vấn đề", e: "背が高いなら高いで、大変なこともあるんだよ。", t: "Cao cũng có những khó khăn của cao." },
+      { id: 52, p: "N1なりN2なり/V1るなりV2るなり", m: "Hoặc là...này rồi...này", e: "引っ越しても、電話なりメールなり連絡してね。", t: "Kể cả anh có chuyển nhà thì hãy cứ gọi điện hoặc là gửi mail liên lạc với tôi nhé." },
+      { id: 53, p: "Vます/普通形 + なりに/なりの", m: "Hết sức của/Theo cách của", e: "スポーツをする上で、背が低くても低いなりのメリットはある。", t: "Trong khi chơi thể thao, ngay cả thấp cũng có những ưu điểm của thấp." },
+      { id: 54, p: "N + にあって", m: "Ở trong hoàn cảnh/bối cảnh", e: "IT社会にあって、リモートワークを導入する会社が増えてきている。", t: "Trong xã hội công nghệ thông tin, những công ty áp dụng phương thức làm việc trực tuyến ngày càng tăng." },
+      { id: 55, p: "N + に至っては", m: "Còn đến…thì", e: "彼女は好き嫌いが多く、野菜に至ってはほとんど食べない。", t: "Cô ấy có nhiều món thích và ghét nhưng đến rau thì hầu như không ăn luôn." },
+      { id: 56, p: "N + に至るまで", m: "Đến cả", e: "この歌はお年寄りから子どもに至るまで、あらゆる世代に愛されている。", t: "Bài hát này được tất cả các thế hệ yêu thích, từ những người cao tuổi cho đến cả bọn trẻ con." },
+      { id: 57, p: "N + にかこつけ", m: "Lấy cớ…để", e: "出張にかこつけて、経費で遊園地に行くなんて許されない。", t: "Lấy cớ đi công tác để đi khu vui chơi bằng tiền công ty thì quả thật không thể tha thứ được." },
+      { id: 58, p: "N/Vる + にかたくない", m: "Không khó để", e: "大好きな恋人に振られてしまった彼の気持ちは、想像にかたくない。", t: "Không khó để có thể hình dung ra cảm xúc của anh ấy khi bị người anh ấy yêu nhất chia tay." },
+      { id: 59, p: "Vる/Vない/Aい/Aな + に越したことはない", m: "Không gì tốt hơn là", e: "大切な資料なら、毎日バックアップを取っておくに越したことはない。", t: "Nếu là những tài liệu quan trọng thì tốt nhất nên sao lưu nó hàng ngày." },
+      { id: 60, p: "N + にして", m: "(Mốc thời gian, điều kiện)", e: "入社5年目にして、ようやく給料が少し上がった。", t: "Vào công ty 5 năm trời mà mãi lương mới tăng lên một chút." },
+      { id: 61, p: "N + に即（則）して", m: "Dựa theo, hợp với", e: "現場では、状況に即したすばやい判断が求められる。", t: "Ở nơi sản xuất rất cần những phán đoán nhanh chóng dựa theo tình hình." },
+      { id: 62, p: "Vる + にたえない", m: "Không…nổi, không đáng để…", e: "汚い言葉ばかり使って話すので、彼の話は聞くにたえない。", t: "Vì anh ta toàn dùng những từ ngữ bẩn thỉu nên câu chuyện của anh ta không đáng để nghe." },
+      { id: 63, p: "N + にたえない", m: "Cảm thấy vô cùng…", e: "あの有名なギア先生にお会いできて、感激にたえません。", t: "Được gặp thầy Nghĩa nổi tiếng đó làm tôi cảm thấy vô cùng cảm động." },
+      { id: 64, p: "普通形 + ならまだしも", m: "Thì đã đành", e: "直接だけならまだしも、陰で人の悪口を言うなんて良くないよ。", t: "Nếu mà nói xấu trực tiếp thì còn đỡ, thế nhưng nói xấu người khác ở sau lưng lại là không tốt đâu." },
+      { id: 65, p: "Vる + なり", m: "Vừa mới...thì đã...", e: "彼は夜遅くまで遊んでいたので、家へ帰るなり母親に叱られた。", t: "Bởi anh ta đi chơi tới tận đêm muộn nên khi vừa mới về đến nhà đã bị mẹ mắng." },
+      { id: 66, p: "N/Vる + にたる", m: "Đáng để, đủ để", e: "授業料は高額だが、これまでの実績を見ると受講するにたるものだ。", t: "Tiền học phí rất đắt, nhưng nếu nhìn vào kết quả thực tế từ trước đến nay thì quả thật là khóa học đáng để học." },
+      { id: 67, p: "N/Vる + にとどまらず", m: "Không chỉ dừng lại ở", e: "彼女の歌唱力は日本国内にとどまらず、世界中で称賛されている。", t: "Khả năng ca hát của cô ấy không chỉ dừng lại trong phạm vi Nhật Bản mà còn được tán dương trên toàn thế giới." },
+      { id: 68, p: "N/Vる + にはあたらない", m: "Chẳng cần thiết phải, không đến mức", e: "彼のやったことはたしかに悪いことだけど、犯罪にはあたらないそうだ。", t: "Việc anh ta làm đúng là việc xấu, nhưng có vẻ nó không đến mức là một tội ác." },
+      { id: 69, p: "N/普通形の + にひきかえ", m: "Trái ngược với", e: "勤勉な兄にひきかえ、弟は毎日あそんでばかりで本当にだらしない。", t: "Trái ngược với người anh rất chăm chỉ thì người em suốt ngày chơi bời lêu lổng, thật là vô tích sự." },
+      { id: 70, p: "Vる/Vない/N/Aい/Aな + にもほどがある", m: "Cũng vừa phải thôi", e: "この資料を一時間で処理しろなんて、冗談にもほどがあるよ。", t: "Bắt xử lý cái tài liệu này trong một giờ thì đúng là có đùa cũng vừa phải thôi chứ." },
+      { id: 71, p: "N + にもまして", m: "Hơn cả", e: "今年のお祭りは、例年にもまして盛り上がっているようだ。", t: "Lễ hội năm nay có vẻ sôi động hơn mọi năm." },
+      { id: 72, p: "N + の至り", m: "Cực kì, vô cùng", e: "このような栄養ある賞をいただきまして、光栄の至りでございます。", t: "Tôi cảm thấy vô cùng hân hạnh khi nhận được giải thưởng vinh dự như thế này." },
+      { id: 73, p: "N + のごとく/ごとき（に）", m: "Cứ như", e: "彼はどんなときにも、影のごとく私に寄り添ってくれた。", t: "Anh ấy luôn luôn ở bên cạnh tôi cứ như hình với bóng." },
+      { id: 74, p: "普通形 + のをいいことに", m: "Lợi dụng chuyện...để", e: "彼が怒らないのをいいことに彼女は調子に乗って浮気までした。", t: "Cô ấy lợi dụng việc anh ấy không giận để tinh vi làm theo ý mình, thậm chí là cả ngoại tình." },
+      { id: 75, p: "N + はおろか", m: "Đừng nói...mà ngay cả", e: "自宅付近には、スーパーはおろか、コンビニすらない不便な環境だ。", t: "Xung quanh nhà tôi là một khu rất bất tiện, đừng nói là siêu thị mà cả cửa hàng tiện lợi cũng không có." },
+      
+      // Phần 1d (76-107)
+      { id: 76, p: "Vば/Vたら + それまでだ", m: "Thì cũng vô nghĩa", e: "最新のパソコンを購入しても、うまく使いこなせなければそれまでだ。", t: "Kể cả có mua máy tính đời mới nhất nhưng nếu không thể sử dụng một cách thuần thục thì cũng vô nghĩa." },
+      { id: 77, p: "Vる + べからず", m: "Không được", e: "大学構内ではタバコを吸うべからず。", t: "Cấm hút thuốc trong khuôn viên trường Đại học." },
+      { id: 78, p: "Vる + べく", m: "Để làm", e: "苦手な読解を克服するべく、まずは短文から読む練習をする。", t: "Để khắc phục phần đọc hiểu mà mình kém, đầu tiên tôi đã luyện tập đọc từ những đoạn văn ngắn." },
+      { id: 79, p: "Vる + べくして", m: "Một cách tất yếu", e: "いつでもお客様の意見を商品に反映してきたこの会社は、成功するべくして成功したと言える。", t: "Công ty này luôn phản ánh những ý kiến của khách hàng lên sản phẩm nên có thể nói rằng việc họ thành công là một điều tất yếu." },
+      { id: 80, p: "Vる/Vた + までのことである", m: "Nếu...thì cùng lắm/Chỉ là", e: "彼はこの内容について事実を述べたまでのことである。", t: "Anh ta chỉ là nêu lên sự thật về nội dung này mà thôi." },
+      { id: 81, p: "N + もさることながら", m: "Không chỉ...mà", e: "この歌手は歌声もさることながら、作詞や作曲のセンスも良い。", t: "Ca sĩ này không chỉ giọng hát mà cả khiếu viết lời và làm nhạc cũng vô cùng tốt." },
+      { id: 82, p: "Vる + までもない", m: "Không cần phải", e: "こんな簡単な問題、先生に聞くまでもない。", t: "Bài tập đơn giản như thế này thì không cần phải hỏi thầy đâu." },
+      { id: 83, p: "N + まみれ", m: "Bám đầy", e: "冷蔵庫の下から、ほこりまみれの指輪が出てきた。", t: "Ở dưới gầm tủ lạnh lòi ra cái nhẫn dính đầy bụi xung quanh." },
+      { id: 84, p: "N1 + めく", m: "Có cảm giác như", e: "あの時は冗談めいた言い方で告白してしまったけど、本気です。", t: "Lúc đó tôi đã tỏ tình một cách có vẻ đùa cợt nhưng thực ra lại là cảm xúc thật của tôi." },
+      { id: 85, p: "Vる/N + として + まじき", m: "Không thể chấp nhận được", e: "遅刻をしたり、目上の人に敬語を使わないというのは、許すまじきことである。", t: "Việc đi muộn và không sử dụng kính ngữ với bề trên là những điều không thể chấp nhận được." },
+      { id: 86, p: "VようにもV(可能形)ない", m: "Dẫu có muốn...cũng không thể...", e: "このパンは、消費期限が切れていて食べようにも食べられない。", t: "Hạn sử dụng của cái bánh này hết mất rồi nên có muốn ăn cũng không thể ăn." },
+      { id: 87, p: "普通形 + ものを", m: "Thế mà", e: "歩きやすい靴で来ればよかったものを、なんでヒールのある靴を履いてきたの。", t: "Nếu mà đi đến bằng giày dễ di chuyển có phải tốt không, vậy mà sao anh lại đi giày có đế thế?" },
+      { id: 88, p: "Vるや否や", m: "Ngay sau khi", e: "外に出るや否や強い雨が降ってきたので、慌てて家へ戻った。", t: "Ngay khi vừa ra ngoài, trời bắt đầu mưa to nên tôi lại vội vàng trở về nhà." },
+      { id: 89, p: "Vよう + が/と", m: "Kể cả, cho dù", e: "部下に嫌われようと、上司であるからには厳しく指導しなければならない。", t: "Mặc dù bị cấp dưới ghét đi chăng nữa, đã là cấp trên thì vẫn phải chỉ bảo cấp dưới một cách nghiêm khắc." },
+      { id: 90, p: "VようがVるまいが", m: "Dù có hay không", e: "今日は、雨が降ろうと降るまいと外出をする予定だ。", t: "Hôm nay kể cả trời có mưa hay không thì tôi cũng có dự định đi ra ngoài." },
+      { id: 91, p: "N + を限りに", m: "Đến cuối cùng/Đến hết mức", e: "この一本を限りに、禁煙すると家族に宣言した。", t: "Tôi đã tuyên bố với cả gia đình điếu này là điếu thuốc cuối cùng trước khi tôi bỏ thuốc lá." },
+      { id: 92, p: "Vます + ようによっては", m: "Tùy cách mà", e: "携帯電話は便利だが、使いようによって人の健康を損なう可能性がある。", t: "Điện thoại di động rất tiện lợi, tuy nhiên tùy cách sử dụng mà nó có khả năng làm tổn hại đến sức khỏe con người." },
+      { id: 93, p: "Vよう + ものなら", m: "Nếu lỡ", e: "私が近付こうものなら、あの赤ちゃんは大きい声で泣き叫ぶ。", t: "Nếu lỡ tôi có lại gần thì đứa trẻ đó sẽ khóc thét lên." },
+      { id: 94, p: "N + をおいて他にはない", m: "Nếu ngoài...ra thì không có", e: "彼女に告白するチャンスは、もう卒業式をおいて他にない。", t: "Cơ hội để tỏ tình với cô ấy thì không còn lúc nào khác ngoài lễ tốt nghiệp." },
+      { id: 95, p: "N + を押して", m: "Bất chấp", e: "病気を押して試験を受けたが、思うように実力を発揮できなかった。", t: "Bất chấp bệnh tật và vẫn dự thi, thế mà tôi đã không phát huy được thực lực của mình như những gì đã nghĩ." },
+      { id: 96, p: "N + を皮切りに", m: "Bắt đầu với", e: "案内ロボットの開発を皮切りに、IT技術を使った様々なロボットが次々と誕生した。", t: "Bắt đầu với sự phát triển của robot hướng dẫn mà rất nhiều con robot khác nhau có sử dụng kĩ thuật công nghệ thông tin đã lần lượt ra đời." },
+      { id: 97, p: "N + を禁じ得ない", m: "Không thể kìm được", e: "好きだったアイドルに恋人がいたと知って、驚きを禁じ得ない。", t: "Tôi không khỏi bất ngờ khi biết thần tượng mình thích đã có người yêu." },
+      { id: 98, p: "N + を踏まえて", m: "Dựa trên, căn cứ trên", e: "今回の失敗を踏まえて、問題点を改善していこうと思います。", t: "Dựa trên thất bại lần này, tôi sẽ cố gắng cải thiện vấn đề." },
+      { id: 99, p: "N + を経て", m: "Trải qua", e: "中学生の時から10年の交際期間を経て、彼は結婚した。", t: "Sau khi trải qua thời gian hẹn hò 10 năm trời kể từ hồi trung học, anh ấy đã kết hôn." },
+      { id: 100, p: "Vない + んばかりに", m: "Cứ như là", e: "グラスに溢れんばかりにビールを注いだ。", t: "Rót nhiều bia vào cốc cứ như thể sắp tràn tới nơi." },
+      { id: 101, p: "V普/Aい/Aな/N+だ + (か)と思いきや", m: "Cứ tưởng, cứ ngỡ", e: "定時で帰れるかと思いきや、上司から残業してほしいとお願いされてしまった。", t: "Cứ tưởng có thể được về đúng giờ, nhưng lại bị cấp trên yêu cầu làm thêm giờ." },
+      { id: 102, p: "N + をもって (thời điểm)", m: "Lấy mốc là, kể từ", e: "課長は、10月1日をもって沖縄支店に異動することになった。", t: "Trưởng phòng sẽ được chuyển đến chi nhánh Okinawa kể từ ngày 1 tháng 10." },
+      { id: 103, p: "N + をもって (phương tiện)", m: "Lấy...để làm, thực hiện bằng...", e: "10年間育ててきた愛犬を亡くして、命の大切さを身をもって知った。", t: "Sau khi mất chú chó yêu quý mà mình đã nuôi 10 năm, bản thân tôi cũng đã hiểu được sự quý giá của sinh mệnh." },
+      { id: 104, p: "N + をものともせず", m: "Bất chấp", e: "社長は周囲の反対をものともせず、海外展開へ踏み切った。", t: "Bất chấp sự phản đối xung quanh, Giám đốc vẫn quyết định mở rộng hoạt động ra nước ngoài." },
+      { id: 105, p: "N + を余儀なくされる", m: "Buộc phải", e: "急な転勤命令により、海外への引っ越しを余儀なくされた。", t: "Do lệnh chuyển công tác đột ngột, tôi buộc phải chuyển nhà ra nước ngoài." },
+      { id: 106, p: "N + をよそに", m: "Mặc kệ, bỏ ngoài tai", e: "ダイエットをしている私をよそに夫は隣でお菓子を食べている。", t: "Mặc kệ tôi đang ăn kiêng, chồng tôi vẫn cứ thản nhiên ngồi cạnh tôi ăn kẹo." },
+      { id: 107, p: "Vない + んがため（に）", m: "Để", e: "強豪校に勝たんがため、今までにない特別な作戦を立てた。", t: "Để chiến thắng trước trường đối thủ mạnh như vậy, chúng tôi đã nghĩ ra một chiến lược đặc biệt chưa từng có từ trước tới nay." },
+    ];
 
     let mastered = [];
     let idx = 0;
     let tab = 'all';
     let flipped = false;
+    let isShuffled = false;
+    let shuffledData = [];
 
     function loadAllMastered() {
       mastered = [];
@@ -94,7 +191,7 @@
       let part = '';
       if (id <= 25) part = '1a';
       else if (id <= 50) part = '1b';
-      else if (id <= 72) part = '1c';
+      else if (id <= 75) part = '1c';
       else part = '1d';
 
       try {
@@ -112,10 +209,31 @@
       }
     }
 
+    // Hàm xáo trộn mảng
+    function shuffleArray(array) {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    }
+
+    function toggleShuffle() {
+      isShuffled = !isShuffled;
+      if (isShuffled) {
+        shuffledData = shuffleArray(allData);
+      }
+      idx = 0;
+      flipped = false;
+      render();
+    }
+
     function getCards() {
-      if (tab === 'all') return allData;
-      if (tab === 'learning') return allData.filter(c => !mastered.includes(c.id));
-      return allData.filter(c => mastered.includes(c.id));
+      const sourceData = isShuffled ? shuffledData : allData;
+      if (tab === 'all') return sourceData;
+      if (tab === 'learning') return sourceData.filter(c => !mastered.includes(c.id));
+      return sourceData.filter(c => mastered.includes(c.id));
     }
 
     function render() {
@@ -132,8 +250,14 @@
               <div class="w-16"></div>
             </div>
             <div class="text-white text-center mt-20 text-lg">Không có thẻ nào trong mục này</div>
+            <div class="flex justify-center mt-6">
+                 <button id="btn-all-empty" class="px-4 py-2 rounded-lg text-sm font-medium bg-white/20 text-white hover:bg-white/30 transition">
+                   Xem tất cả thẻ
+                 </button>
+            </div>
           </div>
         `;
+        document.getElementById('btn-all-empty')?.addEventListener('click', () => setTab('all'));
         return;
       }
       
@@ -155,38 +279,32 @@
             <button id="btn-mastered" class="px-4 py-2 rounded-lg text-sm font-medium transition ${tab === 'mastered' ? 'bg-yellow-400 text-gray-900' : 'bg-white/20 text-white'}">
               Đã thuộc (${mastered.length})
             </button>
+            <button id="btn-shuffle" class="px-4 py-2 rounded-lg text-sm font-medium transition ${isShuffled ? 'bg-green-400 text-gray-900' : 'bg-white/20 text-white'}">
+              ${isShuffled ? '🔀 Đang xáo' : '🔀 Xáo trộn'}
+            </button>
           </div>
 
           <div class="text-white text-center mb-3">
-            <div class="text-lg">${idx + 1} / ${cards.length}</div>
-            <div class="text-sm text-white/70 mt-1">${card.partName} - Mẫu #${card.id}</div>
+            <div class="text-lg">
+               ${idx + 1} / ${cards.length}
+               ${isShuffled ? '<span class="text-xs ml-1 opacity-75">(Ngẫu nhiên)</span>' : ''}
+            </div>
+            <div class="text-sm text-white/70 mt-1">Mẫu #${card.id}</div>
           </div>
           
           <div id="flashcard" class="flip-card h-80 cursor-pointer ${flipped ? 'flipped' : ''}">
             <div class="flip-card-inner relative w-full h-full">
               <div class="flip-card-front absolute inset-0 bg-white rounded-2xl shadow-2xl flex flex-col items-center justify-center p-6">
                 <div class="text-sm text-gray-400 mb-2">#${card.id}</div>
-                <div class="text-2xl font-bold text-indigo-700 text-center leading-relaxed px-2">Mẫu ${card.id}</div>
-                <div class="text-gray-400 mt-6 text-sm">👆 Nhấn để xem chi tiết</div>
-                <div class="mt-4 px-4 py-2 bg-indigo-100 rounded-lg">
-                  <div class="text-xs text-indigo-600">${card.partName}</div>
-                </div>
+                <div class="text-2xl font-bold text-indigo-700 text-center leading-relaxed px-2">${card.p}</div>
+                <div class="text-gray-400 mt-6 text-sm">👆 Nhấn để lật thẻ</div>
               </div>
-              <div class="flip-card-back absolute inset-0 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl shadow-2xl p-5 overflow-auto flex flex-col items-center justify-center">
-                <div class="text-center">
-                  <div class="text-2xl mb-4">📚</div>
-                  <div class="text-gray-700 mb-3 font-semibold">Mẫu ngữ pháp #${card.id}</div>
-                  <div class="text-sm text-gray-600 mb-4">Thuộc ${card.partName} (Mẫu ${card.id <= 25 ? '1-25' : card.id <= 50 ? '26-50' : card.id <= 72 ? '51-72' : '73-107'})</div>
-                  <div class="bg-white/60 rounded-lg p-4 text-left">
-                    <p class="text-sm text-gray-700 mb-3">💡 <strong>Gợi ý:</strong> Để xem chi tiết mẫu ngữ pháp này với nghĩa và ví dụ đầy đủ, vui lòng học theo từng phần:</p>
-                    <div class="space-y-2 text-xs">
-                      <a href="flashcard-1a.html" class="block text-indigo-600 hover:text-indigo-800">→ Phần 1a (mẫu 1-25)</a>
-                      <a href="flashcard-1b.html" class="block text-blue-600 hover:text-blue-800">→ Phần 1b (mẫu 26-50)</a>
-                      <a href="flashcard-1c.html" class="block text-green-600 hover:text-green-800">→ Phần 1c (mẫu 51-72)</a>
-                      <a href="flashcard-1d.html" class="block text-purple-600 hover:text-purple-800">→ Phần 1d (mẫu 73-107)</a>
-                    </div>
-                  </div>
-                </div>
+              <div class="flip-card-back absolute inset-0 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl shadow-2xl p-4 overflow-auto">
+                <div class="text-indigo-700 font-bold mb-2">📖 Nghĩa:</div>
+                <div class="text-gray-800 mb-3 text-base">${card.m}</div>
+                <div class="text-indigo-700 font-bold mb-2">📝 Ví dụ:</div>
+                <div class="text-gray-800 mb-2 text-sm">${card.e}</div>
+                <div class="text-green-700 italic text-sm">→ ${card.t}</div>
               </div>
             </div>
           </div>
@@ -200,7 +318,7 @@
           </div>
           
           <div class="mt-6 text-center">
-            <a href="index.html" class="text-white/60 text-sm hover:text-white/80">← Quay về Menu để học theo từng phần</a>
+            <a href="index.html" class="text-white/60 text-sm hover:text-white/80">← Quay về Menu</a>
           </div>
         </div>
       `;
@@ -209,15 +327,39 @@
       document.getElementById('btn-all').addEventListener('click', () => setTab('all'));
       document.getElementById('btn-learning').addEventListener('click', () => setTab('learning'));
       document.getElementById('btn-mastered').addEventListener('click', () => setTab('mastered'));
+      document.getElementById('btn-shuffle').addEventListener('click', toggleShuffle);
       document.getElementById('btn-prev').addEventListener('click', prev);
       document.getElementById('btn-next').addEventListener('click', next);
       document.getElementById('btn-master').addEventListener('click', () => toggleMaster(card.id));
     }
 
-    function setTab(t) { tab = t; idx = 0; flipped = false; render(); }
-    function flipCard(e) { e.stopPropagation(); flipped = !flipped; render(); }
-    function next() { const cards = getCards(); flipped = false; idx = (idx + 1) % cards.length; render(); }
-    function prev() { const cards = getCards(); flipped = false; idx = (idx - 1 + cards.length) % cards.length; render(); }
+    function setTab(t) { 
+      tab = t; 
+      idx = 0; 
+      flipped = false; 
+      render(); 
+    }
+
+    function flipCard(e) { 
+      e.stopPropagation();
+      flipped = !flipped; 
+      render(); 
+    }
+
+    function next() { 
+      const cards = getCards(); 
+      flipped = false; 
+      idx = (idx + 1) % cards.length; 
+      render(); 
+    }
+
+    function prev() { 
+      const cards = getCards(); 
+      flipped = false; 
+      idx = (idx - 1 + cards.length) % cards.length; 
+      render(); 
+    }
+
     function toggleMaster(id) {
       saveMastered(id);
       render();
