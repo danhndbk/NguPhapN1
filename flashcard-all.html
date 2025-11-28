@@ -174,6 +174,7 @@
     let flipped = false;
     let isShuffled = false;
     let shuffledData = [];
+    let isAdvanced = false; // Thêm biến cho chế độ nâng cao
 
     function loadAllMastered() {
       mastered = [];
@@ -229,6 +230,12 @@
       render();
     }
 
+    function toggleAdvanced() {
+      isAdvanced = !isAdvanced;
+      flipped = false; // Reset lại trạng thái lật thẻ khi đổi chế độ
+      render();
+    }
+
     function getCards() {
       const sourceData = isShuffled ? shuffledData : allData;
       if (tab === 'all') return sourceData;
@@ -261,6 +268,44 @@
         return;
       }
       
+      // Nội dung thẻ phụ thuộc vào chế độ nâng cao (isAdvanced)
+      let frontContent = '';
+      let backContent = '';
+
+      if (isAdvanced) {
+        // Chế độ nâng cao: Mặt trước là Nghĩa (m)
+        frontContent = `
+          <div class="text-sm text-gray-400 mb-2">#${card.id} (Nâng cao)</div>
+          <div class="text-xl font-bold text-gray-800 text-center leading-relaxed px-2">${card.m}</div>
+          <div class="text-gray-400 mt-6 text-sm">👆 Nhấn để xem cấu trúc</div>
+        `;
+        
+        // Chế độ nâng cao: Mặt sau là Cấu trúc (p) + Ví dụ (e) + Dịch (t)
+        backContent = `
+          <div class="text-indigo-700 font-bold mb-2">🧩 Cấu trúc:</div>
+          <div class="text-xl font-bold text-indigo-700 mb-3">${card.p}</div>
+          <div class="text-indigo-700 font-bold mb-2">📝 Ví dụ:</div>
+          <div class="text-gray-800 mb-2 text-sm">${card.e}</div>
+          <div class="text-green-700 italic text-sm">→ ${card.t}</div>
+        `;
+      } else {
+        // Chế độ thường: Mặt trước là Cấu trúc (p)
+        frontContent = `
+          <div class="text-sm text-gray-400 mb-2">#${card.id}</div>
+          <div class="text-2xl font-bold text-indigo-700 text-center leading-relaxed px-2">${card.p}</div>
+          <div class="text-gray-400 mt-6 text-sm">👆 Nhấn để lật thẻ</div>
+        `;
+        
+        // Chế độ thường: Mặt sau là Nghĩa (m) + Ví dụ (e) + Dịch (t)
+        backContent = `
+          <div class="text-indigo-700 font-bold mb-2">📖 Nghĩa:</div>
+          <div class="text-gray-800 mb-3 text-base">${card.m}</div>
+          <div class="text-indigo-700 font-bold mb-2">📝 Ví dụ:</div>
+          <div class="text-gray-800 mb-2 text-sm">${card.e}</div>
+          <div class="text-green-700 italic text-sm">→ ${card.t}</div>
+        `;
+      }
+      
       app.innerHTML = `
         <div class="max-w-md mx-auto pb-4">
           <div class="flex items-center justify-between mb-4">
@@ -282,6 +327,9 @@
             <button id="btn-shuffle" class="px-4 py-2 rounded-lg text-sm font-medium transition ${isShuffled ? 'bg-green-400 text-gray-900' : 'bg-white/20 text-white'}">
               ${isShuffled ? '🔀 Đang trộn' : '🔀 Trộn Thẻ'}
             </button>
+            <button id="btn-advanced" class="px-4 py-2 rounded-lg text-sm font-medium transition ${isAdvanced ? 'bg-pink-500 text-white' : 'bg-white/20 text-white'}">
+              ${isAdvanced ? '★ Nâng cao: Bật' : '☆ Nâng cao: Tắt'}
+            </button>
           </div>
 
           <div class="text-white text-center mb-3">
@@ -295,16 +343,10 @@
           <div id="flashcard" class="flip-card h-80 cursor-pointer ${flipped ? 'flipped' : ''}">
             <div class="flip-card-inner relative w-full h-full">
               <div class="flip-card-front absolute inset-0 bg-white rounded-2xl shadow-2xl flex flex-col items-center justify-center p-6">
-                <div class="text-sm text-gray-400 mb-2">#${card.id}</div>
-                <div class="text-2xl font-bold text-indigo-700 text-center leading-relaxed px-2">${card.p}</div>
-                <div class="text-gray-400 mt-6 text-sm">👆 Nhấn để lật thẻ</div>
+                ${frontContent}
               </div>
               <div class="flip-card-back absolute inset-0 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl shadow-2xl p-4 overflow-auto">
-                <div class="text-indigo-700 font-bold mb-2">📖 Nghĩa:</div>
-                <div class="text-gray-800 mb-3 text-base">${card.m}</div>
-                <div class="text-indigo-700 font-bold mb-2">📝 Ví dụ:</div>
-                <div class="text-gray-800 mb-2 text-sm">${card.e}</div>
-                <div class="text-green-700 italic text-sm">→ ${card.t}</div>
+                ${backContent}
               </div>
             </div>
           </div>
@@ -318,7 +360,7 @@
           </div>
           
           <div class="mt-6 text-center">
-            <a href="index.html" class="text-white/60 text-sm hover:text-white/80">← Quay về Menu</a>
+            <a href="menu.html" class="text-white/60 text-sm hover:text-white/80">← Quay về Menu</a>
           </div>
         </div>
       `;
@@ -328,6 +370,7 @@
       document.getElementById('btn-learning').addEventListener('click', () => setTab('learning'));
       document.getElementById('btn-mastered').addEventListener('click', () => setTab('mastered'));
       document.getElementById('btn-shuffle').addEventListener('click', toggleShuffle);
+      document.getElementById('btn-advanced').addEventListener('click', toggleAdvanced); // Thêm sự kiện cho nút Nâng cao
       document.getElementById('btn-prev').addEventListener('click', prev);
       document.getElementById('btn-next').addEventListener('click', next);
       document.getElementById('btn-master').addEventListener('click', () => toggleMaster(card.id));
